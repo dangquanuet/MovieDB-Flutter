@@ -1,12 +1,15 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:loadmore/loadmore.dart';
 import 'package:meta/meta.dart';
 import 'package:moviedb_flutter/data/model/movie.dart';
 import 'package:moviedb_flutter/data/remote/movie_repo.dart';
 import 'package:moviedb_flutter/data/response/MovieListResponse.dart';
 import 'package:moviedb_flutter/screen/detail_page.dart';
 import 'package:rxdart/rxdart.dart';
+
+const ITEM_PER_PAGE = 20;
 
 class _MyHomePageState extends State<MyHomePage> {
   MovieDataSource _dataSource;
@@ -15,6 +18,7 @@ class _MyHomePageState extends State<MyHomePage> {
   bool _isLoading;
   GlobalKey<ScaffoldState> _scaffoldKey;
   var currentPage = 0;
+  var isLastPage = false;
 
   @override
   void initState() {
@@ -51,6 +55,7 @@ class _MyHomePageState extends State<MyHomePage> {
   onData(int page, MovieListResponse response) {
     setState(() {
       _movies.addAll(response.results);
+      isLastPage = response.results.length < ITEM_PER_PAGE;
       currentPage = page;
       _movies.forEach((m) => debugPrint(m.toString()));
       _isLoading = false;
@@ -100,14 +105,16 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
           ),*/
           Flexible(
-            child: _isLoading
-                ? Center(child: CircularProgressIndicator())
-                : ListView.builder(
-                    itemCount: _movies.length,
-                    itemBuilder: (context, index) =>
-                        MovieWidget(movie: _movies[index]),
-                  ),
-          ),
+              child: _isLoading
+                  ? Center(child: CircularProgressIndicator())
+                  : LoadMore(
+                      isFinish: isLastPage,
+                      onLoadMore: loadData(currentPage + 1),
+                      child: ListView.builder(
+                        itemCount: _movies.length,
+                        itemBuilder: (context, index) =>
+                            MovieWidget(movie: _movies[index]),
+                      ))),
         ],
       ),
     );
