@@ -20,14 +20,6 @@ class MyApp extends StatelessWidget {
         child: Scaffold(
           key: _scaffoldKey,
           appBar: AppBar(
-            title: Text(
-              'Movie search',
-              style: TextStyle(
-                  color: Colors.white,
-                  fontFamily: 'Poppins',
-                  fontWeight: FontWeight.w600,
-                  fontSize: 18.0),
-            ),
             bottom: TabBar(
               tabs: [
                 Tab(icon: Icon(Icons.movie)),

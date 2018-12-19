@@ -2,8 +2,9 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:meta/meta.dart';
-import 'package:moviedb_flutter/data/movie.dart';
-import 'package:moviedb_flutter/data/movie_repo.dart';
+import 'package:moviedb_flutter/data/model/movie.dart';
+import 'package:moviedb_flutter/data/remote/movie_repo.dart';
+import 'package:moviedb_flutter/data/response/MovieListResponse.dart';
 import 'package:moviedb_flutter/screen/detail_page.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -13,6 +14,7 @@ class _MyHomePageState extends State<MyHomePage> {
   List<Movie> _movies;
   bool _isLoading;
   GlobalKey<ScaffoldState> _scaffoldKey;
+  var currentPage = 0;
 
   @override
   void initState() {
@@ -32,9 +34,13 @@ class _MyHomePageState extends State<MyHomePage> {
 
     _dataSource = MovieDataSource.getInstance();
 
-    Observable.fromFuture(_dataSource.discoverMovies())
+    loadData(currentPage + 1);
+  }
+
+  loadData(int page) {
+    Observable.fromFuture(_dataSource.discoverMovies(page: page))
         .doOnListen(onListen)
-        .listen(onData, onError: onError);
+        .listen((response) => onData(page, response), onError: onError);
   }
 
   Stream<List<Movie>> searchMovie(query) {
@@ -42,19 +48,27 @@ class _MyHomePageState extends State<MyHomePage> {
         .doOnListen(onListen);
   }
 
-  onData(List<Movie> movies) {
+  onData(int page, MovieListResponse response) {
+    setState(() {
+      _movies.addAll(response.results);
+      currentPage = page;
+      _movies.forEach((m) => debugPrint(m.toString()));
+      _isLoading = false;
+    });
+  }
+
+  /*onData(List<Movie> movies) {
     setState(() {
       _movies = movies;
       debugPrint("Search...");
       _movies.forEach((m) => debugPrint(m.toString()));
       _isLoading = false;
     });
-  }
+  }*/
 
   onError(e) {
     setState(() {
       _isLoading = false;
-      debugPrint(e.toString());
       _scaffoldKey.currentState.showSnackBar(
         SnackBar(
           content: Text('Error: $e'),

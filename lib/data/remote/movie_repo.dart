@@ -4,11 +4,12 @@ import 'dart:io';
 
 import 'package:http/http.dart' as http;
 import 'package:meta/meta.dart';
-import 'package:moviedb_flutter/data/favorite_movie_db.dart';
-import 'package:moviedb_flutter/data/movie.dart';
+import 'package:moviedb_flutter/data/local/favorite_movie_db.dart';
+import 'package:moviedb_flutter/data/model/movie.dart';
+import 'package:moviedb_flutter/data/response/MovieListResponse.dart';
 
 abstract class MovieDataSource {
-  Future<List<Movie>> discoverMovies();
+  Future<MovieListResponse> discoverMovies({@required page: int});
 
   Future<List<Movie>> getMovies({@required String query});
 
@@ -34,6 +35,7 @@ class _MovieRepository implements MovieDataSource {
 
   static const API_KEY = 'api_key';
   static const QUERY = 'query';
+  static const PAGE = "page";
   static const RESULTS = 'results';
   static const STATUS_MESSAGE = 'status_message';
 
@@ -46,14 +48,14 @@ class _MovieRepository implements MovieDataSource {
   _MovieRepository._internal(this._db);
 
   @override
-  Future<List<Movie>> discoverMovies() async {
-    var url = Uri.https(BASE_URL, DISCOVER_MOVIE, {API_KEY: MOVIE_API_KEY});
+  Future<MovieListResponse> discoverMovies({page: int}) async {
+    var url = Uri.https(BASE_URL, DISCOVER_MOVIE,
+        {API_KEY: MOVIE_API_KEY, PAGE: page.toString()});
+    print(url);
     var response = await http.get(url);
     var decoded = json.decode(response.body);
     return response.statusCode == HttpStatus.OK
-        ? (decoded[RESULTS] as List)
-            .map((json) => Movie.fromJson(json))
-            .toList()
+        ? MovieListResponse.fromJson(decoded)
         : throw HttpException(decoded[STATUS_MESSAGE]);
   }
 
@@ -66,7 +68,6 @@ class _MovieRepository implements MovieDataSource {
     );
     var response = await http.get(url);
     var decoded = json.decode(response.body);
-
     return response.statusCode == HttpStatus.OK
         ? (decoded[RESULTS] as List)
             .map((json) => Movie.fromJson(json))
