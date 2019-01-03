@@ -5,76 +5,67 @@ import 'package:loadmore/loadmore.dart';
 import 'package:meta/meta.dart';
 import 'package:moviedb_flutter/data/model/movie.dart';
 import 'package:moviedb_flutter/data/remote/movie_repo.dart';
-import 'package:moviedb_flutter/data/response/MovieListResponse.dart';
 import 'package:moviedb_flutter/screen/detail_page.dart';
 import 'package:rxdart/rxdart.dart';
 
 const ITEM_PER_PAGE = 20;
 
 class _MyHomePageState extends State<MyHomePage> {
-  MovieDataSource _dataSource;
-  PublishSubject<String> _subject;
-  List<Movie> _movies;
-  bool _isLoading;
-  GlobalKey<ScaffoldState> _scaffoldKey;
+  var movieDataSource = MovieDataSource.getInstance();
+  var listItem = <Movie>[];
+  GlobalKey<ScaffoldState> scaffoldKey;
   var currentPage = 0;
+  var isLoading = false;
   var isLastPage = false;
 
   @override
   void initState() {
     super.initState();
+    scaffoldKey = widget.scaffoldKey;
+    firstLoad();
+  }
 
-    _isLoading = false;
-    _scaffoldKey = widget.scaffoldKey;
-    _movies = <Movie>[];
+  isFirst() {
+    return currentPage == 0 && listItem.isEmpty;
+  }
 
-    /*_subject = PublishSubject()
-      ..stream
-          .debounce(Duration(milliseconds: 300))
-          .distinct()
-          .where((query) => query.trim().isNotEmpty)
-          .switchMap(searchMovie)
-          .listen(onData, onError: onError);*/
-
-    _dataSource = MovieDataSource.getInstance();
-
-    loadData(currentPage + 1);
+  firstLoad() {
+    if (isFirst()) {
+      isLoading = true;
+      loadData(currentPage + 1);
+    }
   }
 
   loadData(int page) {
-    Observable.fromFuture(_dataSource.discoverMovies(page: page))
-        .doOnListen(onListen)
-        .listen((response) => onData(page, response), onError: onError);
+    Observable.fromFuture(movieDataSource.discoverMovies(page: page))
+//        .doOnListen(onListen)
+        .listen((response) => onSuccess(page, response.results),
+            onError: onError);
   }
 
-  Stream<List<Movie>> searchMovie(query) {
-    return Observable.fromFuture(_dataSource.getMovies(query: query))
-        .doOnListen(onListen);
+  getItemPerPage() {
+    return ITEM_PER_PAGE;
   }
 
-  onData(int page, MovieListResponse response) {
+  onSuccess(int page, List<Movie> movies) {
     setState(() {
-      _movies.addAll(response.results);
-      isLastPage = response.results.length < ITEM_PER_PAGE;
       currentPage = page;
-      _movies.forEach((m) => debugPrint(m.toString()));
-      _isLoading = false;
+      if (currentPage == 1) {
+        listItem.clear();
+        isLastPage = false;
+      }
+
+      listItem.addAll(movies);
+      isLastPage = movies.length < getItemPerPage();
+
+      isLoading = false;
     });
   }
-
-  /*onData(List<Movie> movies) {
-    setState(() {
-      _movies = movies;
-      debugPrint("Search...");
-      _movies.forEach((m) => debugPrint(m.toString()));
-      _isLoading = false;
-    });
-  }*/
 
   onError(e) {
     setState(() {
-      _isLoading = false;
-      _scaffoldKey.currentState.showSnackBar(
+      isLoading = false;
+      scaffoldKey.currentState.showSnackBar(
         SnackBar(
           content: Text('Error: $e'),
         ),
@@ -83,41 +74,37 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   onListen() {
-    setState(() {
-      _isLoading = true;
-    });
+    setState(() {});
+  }
+
+  Future<bool> loadMore() async {
+    await Future.delayed(Duration(seconds: 0, milliseconds: 100));
+    if (isLoading = true) return false;
+    isLoading = true;
+    loadData(currentPage + 1);
+    return true;
+  }
+
+  Future<void> refresh() async {
+    loadData(1);
   }
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: Column(
-        mainAxisSize: MainAxisSize.max,
-        children: <Widget>[
-          // edit text search view
-          /*Padding(
-            padding:
-                const EdgeInsets.symmetric(vertical: 16.0, horizontal: 8.0),
-            child: TextField(
-              onChanged: (text) {
-                _subject.add(text);
-              },
-            ),
-          ),*/
-          Flexible(
-              child: _isLoading
-                  ? Center(child: CircularProgressIndicator())
-                  : LoadMore(
-                      isFinish: isLastPage,
-                      onLoadMore: loadData(currentPage + 1),
-                      child: ListView.builder(
-                        itemCount: _movies.length,
-                        itemBuilder: (context, index) =>
-                            MovieWidget(movie: _movies[index]),
-                      ))),
-        ],
-      ),
-    );
+        child: RefreshIndicator(
+            child: LoadMore(
+                isFinish: isLastPage,
+                onLoadMore: loadMore,
+                whenEmptyLoad: false,
+                delegate: DefaultLoadMoreDelegate(),
+                textBuilder: DefaultLoadMoreTextBuilder.english,
+                child: ListView.builder(
+                  itemCount: listItem.length,
+                  itemBuilder: (context, index) =>
+                      MovieWidget(movie: listItem[index]),
+                )),
+            onRefresh: refresh));
   }
 }
 
@@ -198,10 +185,10 @@ class MovieWidgetState extends State<MovieWidget> {
       child: Hero(
         child: _movie.posterPath == null
             ? SizedBox(
-                child: new Center(
+                child: Center(
                   child: Container(
                     width: 92.0 * 2 / 3,
-                    child: new Center(
+                    child: Center(
                       child: Icon(
                         Icons.error,
                         color: Colors.redAccent.shade400,
@@ -259,7 +246,7 @@ class MovieWidgetState extends State<MovieWidget> {
                       color: Theme.of(context).accentColor,
                     ),
                     SizedBox(width: 8.0),
-                    new Center(
+                    Center(
                       child: Text(
                         _movie.releaseDate.toString(),
                         style: regularStyle,

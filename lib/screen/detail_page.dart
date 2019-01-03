@@ -45,7 +45,7 @@ class _DetailPageState extends State<DetailPage> {
           ],
         ),
       ),
-      floatingActionButton: new FloatingActionButton(
+      floatingActionButton: FloatingActionButton(
         onPressed: _isLoading ? null : _onPressed,
         child: _isLoading
             ? Container()
@@ -65,7 +65,7 @@ class _DetailPageState extends State<DetailPage> {
         fit: BoxFit.cover,
         height: 300.0,
       ),
-      constraints: new BoxConstraints.expand(height: 300.0),
+      constraints: BoxConstraints.expand(height: 300.0),
     );
   }
 
@@ -108,16 +108,16 @@ class _DetailPageState extends State<DetailPage> {
     );
 
     final thumbnail = Container(
-      margin: new EdgeInsets.only(bottom: 92.0),
+      margin: EdgeInsets.only(bottom: 92.0),
       alignment: AlignmentDirectional.center,
       child: Hero(
         child: _movie.posterPath == null
             ? SizedBox(
-                child: new Center(
+                child: Center(
                   child: Container(
                     width: 92.0,
                     height: 92.0 / 2 * 3,
-                    child: new Center(
+                    child: Center(
                       child: Icon(
                         Icons.error,
                         color: Colors.redAccent.shade400,
@@ -157,8 +157,8 @@ class _DetailPageState extends State<DetailPage> {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              new Expanded(
-                child: new Row(
+              Expanded(
+                child: Row(
                   children: <Widget>[
                     Icon(
                       Icons.thumb_up,
@@ -175,15 +175,15 @@ class _DetailPageState extends State<DetailPage> {
                 ),
               ),
               SizedBox(width: 4.0),
-              new Expanded(
-                child: new Row(
+              Expanded(
+                child: Row(
                   children: <Widget>[
                     Icon(
                       Icons.date_range,
                       color: Theme.of(context).accentColor,
                     ),
                     SizedBox(width: 8.0),
-                    new Center(
+                    Center(
                       child: Text(
                         _movie.releaseDate.toString(),
                         style: regularStyle,
@@ -223,7 +223,7 @@ class _DetailPageState extends State<DetailPage> {
       ),
     );
 
-    return new RefreshIndicator(
+    return RefreshIndicator(
       child: ListView(
         physics: const AlwaysScrollableScrollPhysics(),
         children: <Widget>[

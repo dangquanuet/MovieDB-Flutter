@@ -110,7 +110,7 @@ class _FavoritePageState extends State<FavoritePage> {
       setState(() => _movies.removeWhere((m) => m.id == id));
     } else {
       _scaffoldKey.currentState
-          .showSnackBar(new SnackBar(content: new Text('An error occured')));
+          .showSnackBar(SnackBar(content: Text('An error occured')));
     }
     debugPrint("Remove favorite: $res");
   }
@@ -144,10 +144,10 @@ class _FavoritePageState extends State<FavoritePage> {
       child: Hero(
         child: m.posterPath == null
             ? SizedBox(
-                child: new Center(
+                child: Center(
                   child: Container(
                     width: 92.0 * 2 / 3,
-                    child: new Center(
+                    child: Center(
                       child: Icon(
                         Icons.error,
                         color: Colors.redAccent.shade400,
@@ -183,7 +183,7 @@ class _FavoritePageState extends State<FavoritePage> {
               color: Color(0xff00c6ff)),
           Row(
             children: <Widget>[
-              new Expanded(
+              Expanded(
                 child: Row(
                   children: <Widget>[
                     Icon(
@@ -207,7 +207,7 @@ class _FavoritePageState extends State<FavoritePage> {
                       color: Colors.blueAccent,
                     ),
                     SizedBox(width: 8.0),
-                    new Center(
+                    Center(
                       child: Text(
                         m.releaseDate.toString(),
                         style: regularStyle,
@@ -237,7 +237,7 @@ class _FavoritePageState extends State<FavoritePage> {
       ),
       child: cardContent,
     );
-    return new Dismissible(
+    return Dismissible(
       onDismissed: (_) {
         _onDismissed(m.id);
       },
