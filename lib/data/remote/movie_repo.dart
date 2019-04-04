@@ -101,7 +101,7 @@ class _MovieRepository implements MovieDataSource {
     var decoded = json.decode(response.body);
 
     return response.statusCode == HttpStatus.OK
-        ? new Movie.fromJson(decoded)
+        ? Movie.fromJson(decoded)
         : throw HttpException(decoded[STATUS_MESSAGE]);
   }
 }
