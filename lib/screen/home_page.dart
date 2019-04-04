@@ -99,7 +99,9 @@ class _MyHomePageState extends State<MyHomePage> {
                 whenEmptyLoad: false,
                 delegate: DefaultLoadMoreDelegate(),
                 textBuilder: DefaultLoadMoreTextBuilder.english,
-                child: ListView.builder(
+                child: GridView.builder(
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2),
                   itemCount: listItem.length,
                   itemBuilder: (context, index) =>
                       MovieWidget(movie: listItem[index]),
