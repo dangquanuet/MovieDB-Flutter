@@ -163,14 +163,6 @@ class MovieWidgetState extends State<MovieWidget> {
       fontWeight: FontWeight.w500,
       fontSize: 18.0,
     );
-    final regularStyle = headerStyle.copyWith(
-      fontSize: 9.0,
-      color: Color(0xffb6b2df),
-      fontWeight: FontWeight.w400,
-    );
-    final subHeaderStyle = headerStyle.copyWith(
-      fontSize: 12.0,
-    );
 
     final titleText = Text(
       _movie.title,
@@ -180,117 +172,22 @@ class MovieWidgetState extends State<MovieWidget> {
     );
 
     final thumbnail = Container(
-      margin: EdgeInsets.symmetric(vertical: 12.0),
-      alignment: AlignmentDirectional.centerStart,
       child: Hero(
         child: _movie.posterPath == null
-            ? SizedBox(
-                child: Center(
-                  child: Container(
-                    width: 92.0 * 2 / 3,
-                    child: Center(
-                      child: Icon(
-                        Icons.error,
-                        color: Colors.redAccent.shade400,
-                      ),
-                    ),
-                    decoration: BoxDecoration(color: Colors.black54),
-                  ),
-                ),
-                width: 92.0,
+            ? Icon(
+                Icons.error,
+                color: Colors.redAccent.shade400,
               )
             : Image.network(
-                "https://image.tmdb.org/t/p/w92${_movie.posterPath}",
-                width: 92.0,
+                "https://image.tmdb.org/t/p/w300${_movie.posterPath}",
+                fit: BoxFit.cover,
               ),
         tag: _movie.id,
       ),
     );
-    final cardContent = Container(
-      margin: EdgeInsets.only(left: 46.0),
-      constraints: BoxConstraints.expand(),
-      child: Column(
-        mainAxisSize: MainAxisSize.max,
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          SizedBox(height: 4.0),
-          titleText,
-          SizedBox(height: 8.0),
-          Container(
-              margin: EdgeInsets.symmetric(vertical: 8.0),
-              height: 2.0,
-              width: 32.0,
-              color: Color(0xff00c6ff)),
-          Row(
-            children: <Widget>[
-              Row(
-                children: <Widget>[
-                  Icon(
-                    Icons.thumb_up,
-                    color: Theme.of(context).accentColor,
-                  ),
-                  SizedBox(width: 8.0),
-                  Text(
-                    _movie.voteCount.toString(),
-                    style: regularStyle,
-                  ),
-                ],
-              ),
-              SizedBox(width: 4.0),
-              Expanded(
-                child: Row(
-                  children: <Widget>[
-                    Icon(
-                      Icons.date_range,
-                      color: Theme.of(context).accentColor,
-                    ),
-                    SizedBox(width: 8.0),
-                    Center(
-                      child: Text(
-                        _movie.releaseDate.toString(),
-                        style: regularStyle,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              SizedBox(width: 4.0),
-              starIcon
-            ],
-          ),
-        ],
-      ),
-    );
-    final card = Container(
-      margin: EdgeInsets.only(left: 46.0),
-      decoration: BoxDecoration(
-        color: Color(0xFF333366),
-        shape: BoxShape.rectangle,
-        borderRadius: BorderRadius.circular(8.0),
-        boxShadow: <BoxShadow>[
-          BoxShadow(
-            color: Colors.black12,
-            blurRadius: 10.0,
-            offset: Offset(0.0, 0.0),
-          )
-        ],
-      ),
-      child: cardContent,
-    );
+
     return GestureDetector(
-      child: Container(
-        height: 132.0,
-        margin: EdgeInsets.only(
-          left: 4.0,
-          right: 8.0,
-          bottom: 12.0,
-          top: 12.0,
-        ),
-        child: Stack(
-          children: <Widget>[card, thumbnail],
-        ),
-      ),
+      child: thumbnail,
       onTap: () {
         Navigator.push(context, MaterialPageRoute(builder: (ctx) {
           return DetailPage(movie: _movie);
@@ -299,7 +196,7 @@ class MovieWidgetState extends State<MovieWidget> {
     );
   }
 
-  _onPressed() async {
+  void _onPressed() async {
     final isFavorite = !_movie.isFavorite;
 
     var res = isFavorite

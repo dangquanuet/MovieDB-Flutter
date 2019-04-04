@@ -20,6 +20,7 @@ class MyApp extends StatelessWidget {
         child: Scaffold(
           key: _scaffoldKey,
           appBar: AppBar(
+            title: Text('MovieDB'),
             bottom: TabBar(
               tabs: [
                 Tab(icon: Icon(Icons.movie)),
