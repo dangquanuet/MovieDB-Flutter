@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:moviedb_flutter/data/model/movie.dart';
+import 'package:moviedb_flutter/data/models/movie.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';

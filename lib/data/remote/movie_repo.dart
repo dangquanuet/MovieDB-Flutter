@@ -5,7 +5,7 @@ import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:meta/meta.dart';
 import 'package:moviedb_flutter/data/local/favorite_movie_db.dart';
-import 'package:moviedb_flutter/data/model/movie.dart';
+import 'package:moviedb_flutter/data/models/movie.dart';
 import 'package:moviedb_flutter/data/response/MovieListResponse.dart';
 
 abstract class MovieDataSource {

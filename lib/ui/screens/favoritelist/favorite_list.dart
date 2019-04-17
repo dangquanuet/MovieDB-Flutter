@@ -1,9 +1,9 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:moviedb_flutter/data/model/movie.dart';
+import 'package:moviedb_flutter/data/models/movie.dart';
 import 'package:moviedb_flutter/data/remote/movie_repo.dart';
-import 'package:moviedb_flutter/screen/detail_page.dart';
+import 'package:moviedb_flutter/ui/screens/moviedetail/detail_page.dart';
 import 'package:rxdart/rxdart.dart';
 
 class FavoritePage extends StatefulWidget {

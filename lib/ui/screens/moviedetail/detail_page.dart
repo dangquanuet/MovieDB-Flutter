@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:moviedb_flutter/data/model/movie.dart';
+import 'package:moviedb_flutter/data/models/movie.dart';
 import 'package:moviedb_flutter/data/remote/movie_repo.dart';
 
 class DetailPage extends StatefulWidget {
