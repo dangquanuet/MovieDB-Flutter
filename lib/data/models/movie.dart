@@ -1,6 +1,6 @@
 class Movie {
   final int voteCount;
-  final double voteAverage;
+  final voteAverage;
   final String id;
   final String title;
   final String overview;

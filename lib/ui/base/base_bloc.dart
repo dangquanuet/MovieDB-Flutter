@@ -9,6 +9,22 @@ abstract class BaseBloc<T> {
 
   final dataFetcher = PublishSubject<T>();
 
+  void onLoadFail() {
+    isLoading.sink.add(false);
+  }
+
+  void showError(String errorMessage) {
+    this.errorMessage.sink.add(errorMessage);
+  }
+
+  void showLoading() {
+    isLoading.sink.add(true);
+  }
+
+  void hideLoading() {
+    isLoading.sink.add(false);
+  }
+
   void dispose() {
     dataFetcher.close();
     isLoading.close();

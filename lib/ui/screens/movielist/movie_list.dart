@@ -1,37 +1,33 @@
 import 'package:flutter/material.dart';
 import 'package:moviedb_flutter/data/remote/response/MovieListResponse.dart';
+import 'package:moviedb_flutter/ui/base/base_state.dart';
 import 'package:moviedb_flutter/ui/screens/moviedetail/movie_detail.dart';
 import 'package:moviedb_flutter/ui/screens/moviedetail/movie_detail_bloc_provider.dart';
 import 'package:moviedb_flutter/ui/screens/movielist/movie_list_bloc.dart';
 import 'package:moviedb_flutter/ui/widgets/platform_progress.dart';
 
-class MovieList extends StatefulWidget {
+class MovieListWidget extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
-    return MovieListState();
+    return MovieListWidgetState();
   }
 }
 
-class MovieListState extends State<MovieList> {
-  final moviesBloc = MovieListBloc();
+class MovieListWidgetState extends BaseState<MovieListWidget, MovieListBloc> {
+  @override
+  var bloc = MovieListBloc();
 
   @override
   void initState() {
     super.initState();
-    moviesBloc.fetchAllMovies();
-  }
-
-  @override
-  void dispose() {
-    moviesBloc.dispose();
-    super.dispose();
+    bloc.firstLoad();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: StreamBuilder(
-        stream: moviesBloc.allMovies,
+        stream: bloc.dataFetcher.stream,
         builder: (context, AsyncSnapshot<MovieListResponse> snapshot) {
           if (snapshot.hasData) {
             return buildList(snapshot);
