@@ -6,7 +6,7 @@ import 'package:http/http.dart' as http;
 import 'package:meta/meta.dart';
 import 'package:moviedb_flutter/data/local/favorite_movie_db.dart';
 import 'package:moviedb_flutter/data/models/movie.dart';
-import 'package:moviedb_flutter/data/response/MovieListResponse.dart';
+import 'package:moviedb_flutter/data/remote/response/MovieListResponse.dart';
 
 abstract class MovieDataSource {
   Future<MovieListResponse> discoverMovies({@required page: int});

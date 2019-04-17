@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:http/http.dart' show Client;
-import 'package:moviedb_flutter/data/response/MovieListResponse.dart';
+import 'package:moviedb_flutter/data/remote/response/MovieListResponse.dart';
 
 import '../models/trailer_model.dart';
 

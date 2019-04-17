@@ -1,5 +1,5 @@
+import 'package:moviedb_flutter/data/remote/response/MovieListResponse.dart';
 import 'package:moviedb_flutter/data/repositories/repository.dart';
-import 'package:moviedb_flutter/data/response/MovieListResponse.dart';
 import 'package:moviedb_flutter/ui/base/base_bloc.dart';
 import 'package:rxdart/rxdart.dart';
 
