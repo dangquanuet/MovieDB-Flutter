@@ -1,8 +1,8 @@
 class BaseListResponse<Item> {
-  var page;
-  int totalResults;
-  int totalPages;
-  List<Item> results;
+  final int page;
+  final int totalResults;
+  final int totalPages;
+  final List<Item> results;
 
   BaseListResponse.fromJson(Map<String, dynamic> map)
       : page = map['page'],

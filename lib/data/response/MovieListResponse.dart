@@ -1,16 +1,10 @@
 import 'package:moviedb_flutter/data/models/movie.dart';
 
-import 'BaseListResponse.dart';
-
-class MovieListResponse extends BaseListResponse<Movie> {
-  MovieListResponse.fromJson(Map<String, Movie> map) : super.fromJson(map);
-
-/*int page;
-  int totalResults;
-  int totalPages;
-  List<Movie> results;
-
-  MovieListResponse();
+class MovieListResponse {
+  final int page;
+  final int totalResults;
+  final int totalPages;
+  final List<Movie> results;
 
   MovieListResponse.fromJson(Map<String, dynamic> map)
       : page = map['page'],
@@ -18,5 +12,5 @@ class MovieListResponse extends BaseListResponse<Movie> {
         totalPages = map['total_pages'],
         results = (map['results'] as List)
             .map((json) => Movie.fromJson(json))
-            .toList();*/
+            .toList();
 }
