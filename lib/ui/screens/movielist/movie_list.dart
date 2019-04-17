@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:moviedb_flutter/data/remote/response/MovieListResponse.dart';
+import 'package:moviedb_flutter/data/models/movie.dart';
 import 'package:moviedb_flutter/ui/base/base_state.dart';
 import 'package:moviedb_flutter/ui/screens/moviedetail/movie_detail.dart';
 import 'package:moviedb_flutter/ui/screens/moviedetail/movie_detail_bloc_provider.dart';
@@ -28,7 +28,7 @@ class MovieListWidgetState extends BaseState<MovieListWidget, MovieListBloc> {
     return Scaffold(
       body: StreamBuilder(
         stream: bloc.dataFetcher.stream,
-        builder: (context, AsyncSnapshot<MovieListResponse> snapshot) {
+        builder: (context, AsyncSnapshot<List<Movie>> snapshot) {
           if (snapshot.hasData) {
             return buildList(snapshot);
           } else if (snapshot.hasError) {
@@ -40,17 +40,19 @@ class MovieListWidgetState extends BaseState<MovieListWidget, MovieListBloc> {
     );
   }
 
-  Widget buildList(AsyncSnapshot<MovieListResponse> snapshot) {
+  Widget buildList(AsyncSnapshot<List<Movie>> snapshot) {
     return GridView.builder(
-        itemCount: snapshot.data.results.length,
+        itemCount: snapshot.data.length,
         gridDelegate:
             SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
         itemBuilder: (BuildContext context, int index) {
+          bloc.onScrollListener(index);
+
           return GridTile(
             child: InkResponse(
               enableFeedback: true,
               child: Image.network(
-                'https://image.tmdb.org/t/p/w185${snapshot.data.results[index].posterPath}',
+                'https://image.tmdb.org/t/p/w185${snapshot.data[index].posterPath}',
                 fit: BoxFit.cover,
               ),
               onTap: () => openDetailPage(snapshot.data, index),
@@ -59,18 +61,18 @@ class MovieListWidgetState extends BaseState<MovieListWidget, MovieListBloc> {
         });
   }
 
-  openDetailPage(MovieListResponse data, int index) {
+  openDetailPage(List<Movie> data, int index) {
     Navigator.push(
       context,
       MaterialPageRoute(builder: (context) {
         return MovieDetailBlocProvider(
           child: MovieDetail(
-            title: data.results[index].title,
-            posterUrl: data.results[index].backdropPath,
-            description: data.results[index].overview,
-            releaseDate: data.results[index].releaseDate,
-            voteAverage: data.results[index].voteAverage.toString(),
-            movieId: data.results[index].id,
+            title: data[index].title,
+            posterUrl: data[index].backdropPath,
+            description: data[index].overview,
+            releaseDate: data[index].releaseDate,
+            voteAverage: data[index].voteAverage.toString(),
+            movieId: data[index].id,
           ),
         );
       }),

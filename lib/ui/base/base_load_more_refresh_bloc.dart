@@ -1,33 +1,35 @@
+import 'package:moviedb_flutter/data/repositories/repository.dart';
 import 'package:moviedb_flutter/ui/base/base_bloc.dart';
 import 'package:moviedb_flutter/utils/constants.dart';
 
-abstract class BaseLoadMoreRefreshBloc<Item> extends BaseBloc<Item> {
+abstract class BaseLoadMoreRefreshBloc<Item> extends BaseBloc<List<Item>> {
   var isRefreshing = false;
-  final onRefreshListener = {
-    // TODO
-    /*if (isLoading.value == true
-    || isRefreshing.value == true
-    ) return@OnRefreshListener
-    isRefreshing.value = true
-    refreshData()*/
-  };
+
+  void onRefreshListener() {
+    if (isLoading == true || isRefreshing == true) return;
+    isRefreshing = true;
+    refreshData();
+  }
 
   var isLoadMore = false;
   var currentPage = Constants.DEFAULT_FIRST_PAGE - 1;
   var isLastPage = false;
-  final onScrollListener = {
-    // TODO
-    /*if (isLoading.value == true
-    || isRefreshing.value == true
-    || isLoadMore.value == true
-    || isLastPage.value == true
-    ) return
-    isLoadMore.value = true
-    loadMore()*/
-  };
+
+  void onScrollListener(int index) {
+    if (index + getLoadMoreThreshold() >= listItem.length) {
+      if (isLoading == true ||
+          isRefreshing == true ||
+          isLoadMore == true ||
+          isLastPage == true) return;
+      isLoadMore = true;
+      loadMore();
+    }
+  }
 
   final listItem = List<Item>();
   var isEmptyList = false;
+
+  final repository = Repository();
 
   void loadData(int page);
 
@@ -37,7 +39,7 @@ abstract class BaseLoadMoreRefreshBloc<Item> extends BaseBloc<Item> {
 
   void firstLoad() {
     if (_isFirst()) {
-      isLoading.sink.add(true);
+      isLoading = true;
       loadData(getFirstPage());
     }
   }
@@ -46,9 +48,8 @@ abstract class BaseLoadMoreRefreshBloc<Item> extends BaseBloc<Item> {
     loadData(getFirstPage());
   }
 
-  Future<bool> loadMore() async {
+  void loadMore() async {
     loadData(currentPage + 1);
-    return true;
   }
 
   // override if first page is not 1
@@ -80,9 +81,10 @@ abstract class BaseLoadMoreRefreshBloc<Item> extends BaseBloc<Item> {
     if (isRefreshing) resetLoadMore();
 
     listItem.addAll(items);
+    dataFetcher.sink.add(listItem);
 
     isLastPage = items.length < getNumberItemPerPage();
-    isLoading.sink.add(false);
+    isLoading = false;
     isRefreshing = false;
     isLoadMore = false;
 

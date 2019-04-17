@@ -12,8 +12,10 @@ class MovieApiProvider {
   final _baseUrl = "http://api.themoviedb.org/3/movie";
 
   Future<MovieListResponse> fetchMovieList(int page) async {
+    final request = "$_baseUrl/popular?api_key=$_apiKey&page=$page";
+    print(request);
     final response =
-         await client.get("$_baseUrl/popular?api_key=$_apiKey&page=$page");
+         await client.get(request);
     if (response.statusCode == 200) {
       // If the call to the server was successful, parse the JSON
       return MovieListResponse.fromJson(json.decode(response.body));
