@@ -33,9 +33,7 @@ abstract class BaseLoadMoreRefreshBloc<Item> extends BaseBloc<List<Item>> {
 
   void loadData(int page);
 
-  bool _isFirst() {
-    return currentPage == _getPreFirstPage() && listItem.isEmpty;
-  }
+  bool _isFirst() => currentPage == _getPreFirstPage() && listItem.isEmpty;
 
   void firstLoad() {
     if (_isFirst()) {
@@ -48,28 +46,20 @@ abstract class BaseLoadMoreRefreshBloc<Item> extends BaseBloc<List<Item>> {
     loadData(getFirstPage());
   }
 
-  void loadMore() async {
+  void loadMore() {
     loadData(currentPage + 1);
   }
 
   // override if first page is not 1
-  int getFirstPage() {
-    return Constants.DEFAULT_FIRST_PAGE;
-  }
+  int getFirstPage() => Constants.DEFAULT_FIRST_PAGE;
 
-  int _getPreFirstPage() {
-    return getFirstPage() - 1;
-  }
+  int _getPreFirstPage() => getFirstPage() - 1;
 
   // override if need change number visible threshold
-  int getLoadMoreThreshold() {
-    return Constants.DEFAULT_NUM_VISIBLE_THRESHOLD;
-  }
+  int getLoadMoreThreshold() => Constants.DEFAULT_NUM_VISIBLE_THRESHOLD;
 
   // override if need change number item per page
-  int getNumberItemPerPage() {
-    return Constants.DEFAULT_ITEM_PER_PAGE;
-  }
+  int getNumberItemPerPage() => Constants.DEFAULT_ITEM_PER_PAGE;
 
   void resetLoadMore() {
     isLastPage = false;
