@@ -3,6 +3,10 @@ import 'package:moviedb_flutter/ui/base/base_bloc.dart';
 import 'package:moviedb_flutter/utils/constants.dart';
 
 abstract class BaseLoadMoreRefreshBloc<Item> extends BaseBloc<List<Item>> {
+  BaseLoadMoreRefreshBloc() {
+    currentPage = _getPreFirstPage();
+  }
+
   var isRefreshing = false;
 
   Future onRefreshListener() async {
@@ -12,7 +16,7 @@ abstract class BaseLoadMoreRefreshBloc<Item> extends BaseBloc<List<Item>> {
   }
 
   var isLoadMore = false;
-  var currentPage = Constants.DEFAULT_FIRST_PAGE - 1;
+  var currentPage = 0;
   var isLastPage = false;
 
   void onScrollListener(int index) {
