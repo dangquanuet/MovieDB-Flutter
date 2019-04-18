@@ -41,24 +41,27 @@ class MovieListWidgetState extends BaseState<MovieListWidget, MovieListBloc> {
   }
 
   Widget buildList(AsyncSnapshot<List<Movie>> snapshot) {
-    return GridView.builder(
-        itemCount: snapshot.data.length,
-        gridDelegate:
-            SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
-        itemBuilder: (BuildContext context, int index) {
-          bloc.onScrollListener(index);
+    return RefreshIndicator(
+      onRefresh: bloc.onRefreshListener,
+      child: GridView.builder(
+          itemCount: snapshot.data.length,
+          gridDelegate:
+              SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
+          itemBuilder: (BuildContext context, int index) {
+            bloc.onScrollListener(index);
 
-          return GridTile(
-            child: InkResponse(
-              enableFeedback: true,
-              child: Image.network(
-                'https://image.tmdb.org/t/p/w185${snapshot.data[index].posterPath}',
-                fit: BoxFit.cover,
+            return GridTile(
+              child: InkResponse(
+                enableFeedback: true,
+                child: Image.network(
+                  'https://image.tmdb.org/t/p/w185${snapshot.data[index].posterPath}',
+                  fit: BoxFit.cover,
+                ),
+                onTap: () => openDetailPage(snapshot.data, index),
               ),
-              onTap: () => openDetailPage(snapshot.data, index),
-            ),
-          );
-        });
+            );
+          }),
+    );
   }
 
   openDetailPage(List<Movie> data, int index) {

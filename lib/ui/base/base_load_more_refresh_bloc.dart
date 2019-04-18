@@ -5,7 +5,7 @@ import 'package:moviedb_flutter/utils/constants.dart';
 abstract class BaseLoadMoreRefreshBloc<Item> extends BaseBloc<List<Item>> {
   var isRefreshing = false;
 
-  void onRefreshListener() {
+  Future onRefreshListener() async {
     if (isLoading == true || isRefreshing == true) return;
     isRefreshing = true;
     refreshData();
