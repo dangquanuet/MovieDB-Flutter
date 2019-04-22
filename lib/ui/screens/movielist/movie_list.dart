@@ -15,9 +15,6 @@ class MovieListWidget extends StatefulWidget {
 
 class MovieListWidgetState extends BaseState<MovieListWidget, MovieListBloc> {
   @override
-  var bloc = MovieListBloc();
-
-  @override
   void initState() {
     super.initState();
     bloc.firstLoad();

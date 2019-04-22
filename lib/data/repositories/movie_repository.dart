@@ -52,11 +52,12 @@ class _MovieRepository implements MovieRepository {
 
   @override
   Future<MovieListResponse> discoverMovies(int page) async {
-    var url = Uri.https(BASE_URL, DISCOVER_MOVIE,
+    final url = Uri.https(BASE_URL, DISCOVER_MOVIE,
         {API_KEY: MOVIE_API_KEY, PAGE: page.toString()});
     print(url);
-    var response = await http.get(url);
-    var decoded = json.decode(response.body);
+    final response = await http.get(url);
+    final decoded = json.decode(response.body);
+
     return response.statusCode == HttpStatus.OK
         ? MovieListResponse.fromJson(decoded)
         : throw HttpException(decoded[STATUS_MESSAGE]);
@@ -64,13 +65,14 @@ class _MovieRepository implements MovieRepository {
 
   @override
   Future<List<Movie>> getMovies(String query) async {
-    var url = Uri.https(
+    final url = Uri.https(
       BASE_URL,
       SEARCH_MOVIE,
       {API_KEY: MOVIE_API_KEY, QUERY: query ?? ''},
     );
-    var response = await http.get(url);
-    var decoded = json.decode(response.body);
+    final response = await http.get(url);
+    final decoded = json.decode(response.body);
+
     return response.statusCode == HttpStatus.OK
         ? (decoded[RESULTS] as List)
             .map((json) => Movie.fromJson(json))
@@ -94,7 +96,7 @@ class _MovieRepository implements MovieRepository {
 
   @override
   Future<bool> isFavorite(String id) async {
-    var movie = await _db.getMovie(id);
+    final movie = await _db.getMovie(id);
     return movie != null;
   }
 
@@ -106,13 +108,13 @@ class _MovieRepository implements MovieRepository {
 
   @override
   Future<Movie> getMovieById(String id) async {
-    var url = Uri.https(
+    final url = Uri.https(
       BASE_URL,
       MOVIE_DETAIL + '$id',
       {API_KEY: MOVIE_API_KEY},
     );
-    var response = await http.get(url);
-    var decoded = json.decode(response.body);
+    final response = await http.get(url);
+    final decoded = json.decode(response.body);
 
     return response.statusCode == HttpStatus.OK
         ? Movie.fromJson(decoded)

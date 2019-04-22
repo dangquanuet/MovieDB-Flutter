@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:moviedb_flutter/ui/base/bloc_provider.dart';
 import 'package:moviedb_flutter/ui/screens/favoritelist/favorite_list.dart';
 import 'package:moviedb_flutter/ui/screens/home/home_page.dart';
 import 'package:moviedb_flutter/ui/screens/movielist/movie_list.dart';
+import 'package:moviedb_flutter/ui/screens/movielist/movie_list_bloc.dart';
 
 void main() => runApp(App());
 
@@ -11,8 +13,15 @@ class App extends StatelessWidget {
     return MaterialApp(
       theme: ThemeData.dark(),
       home: Scaffold(
-        body: MovieListWidget(),
+        body: buildMovieList(),
       ),
+    );
+  }
+
+  Widget buildMovieList() {
+    return BlocProvider<MovieListBloc>(
+      child: MovieListWidget(),
+      bloc: MovieListBloc(),
     );
   }
 }
