@@ -3,30 +3,29 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:http/http.dart' as http;
-import 'package:meta/meta.dart';
 import 'package:moviedb_flutter/data/local/favorite_movie_db.dart';
 import 'package:moviedb_flutter/data/models/movie.dart';
 import 'package:moviedb_flutter/data/remote/response/MovieListResponse.dart';
 
-abstract class MovieDataSource {
+abstract class MovieRepository {
   Future<MovieListResponse> discoverMovies(int page);
 
   Future<List<Movie>> getMovies(String query);
 
   Future<List<Movie>> getFavoriteMovies();
 
-  Future<bool> isFavorite({@required String id});
+  Future<bool> isFavorite(String id);
 
-  Future<int> removeFavorite({@required String id});
+  Future<int> removeFavorite(String id);
 
-  Future<int> insertFavorite({@required Movie movie});
+  Future<int> insertFavorite(Movie movie);
 
-  Future<Movie> getMovieById({@required String id});
+  Future<Movie> getMovieById(String id);
 
-  factory MovieDataSource.getInstance() => _MovieRepository();
+  factory MovieRepository.getInstance() => _MovieRepository();
 }
 
-class _MovieRepository implements MovieDataSource {
+class _MovieRepository implements MovieRepository {
   static const MOVIE_API_KEY = '2cdf3a5c7cf412421485f89ace91e373';
   static const BASE_URL = 'api.themoviedb.org';
   static const DISCOVER_MOVIE = '/3/discover/movie';
@@ -79,19 +78,19 @@ class _MovieRepository implements MovieDataSource {
   Future<List<Movie>> getFavoriteMovies() => _db.getMovies();
 
   @override
-  Future<bool> isFavorite({String id}) async {
+  Future<bool> isFavorite(String id) async {
     var movie = await _db.getMovie(id);
     return movie != null;
   }
 
   @override
-  Future<int> removeFavorite({String id}) => _db.delete(id);
+  Future<int> removeFavorite(String id) => _db.delete(id);
 
   @override
-  Future<int> insertFavorite({Movie movie}) => _db.insert(movie);
+  Future<int> insertFavorite(Movie movie) => _db.insert(movie);
 
   @override
-  Future<Movie> getMovieById({String id}) async {
+  Future<Movie> getMovieById(String id) async {
     var url = Uri.https(
       BASE_URL,
       MOVIE_DETAIL + '$id',

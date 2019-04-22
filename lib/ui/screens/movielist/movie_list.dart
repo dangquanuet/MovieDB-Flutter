@@ -64,7 +64,7 @@ class MovieListWidgetState extends BaseState<MovieListWidget, MovieListBloc> {
     );
   }
 
-  openDetailPage(List<Movie> data, int index) {
+  void openDetailPage(List<Movie> data, int index) {
     Navigator.push(
       context,
       MaterialPageRoute(builder: (context) {

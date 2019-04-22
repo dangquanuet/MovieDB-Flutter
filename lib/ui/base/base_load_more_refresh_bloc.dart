@@ -33,8 +33,6 @@ abstract class BaseLoadMoreRefreshBloc<Item> extends BaseBloc<List<Item>> {
   final listItem = List<Item>();
   var isEmptyList = false;
 
-  final repository = Repository();
-
   void loadData(int page);
 
   bool _isFirst() => currentPage == _getPreFirstPage() && listItem.isEmpty;

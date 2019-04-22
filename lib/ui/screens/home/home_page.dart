@@ -37,7 +37,7 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   loadData(int page) {
-    Observable.fromFuture(movieDataSource.discoverMovies(page: page))
+    Observable.fromFuture(movieDataSource.discoverMovies(page))
 //        .doOnListen(onListen)
         .listen((response) => onSuccess(page, response.results),
             onError: onError);
