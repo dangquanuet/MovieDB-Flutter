@@ -1,11 +1,11 @@
 import 'dart:async';
 
 import 'package:moviedb_flutter/data/models/trailer_model.dart';
-import 'package:moviedb_flutter/data/repositories/repository.dart';
+import 'package:moviedb_flutter/data/repositories/movie_repository.dart';
 import 'package:rxdart/rxdart.dart';
 
 class MovieDetailBloc {
-  final _repository = Repository();
+  final _movieRepository = MovieRepository.getInstance();
   final _movieId = PublishSubject<String>();
   final _trailers = BehaviorSubject<Future<Trailer>>();
 
@@ -27,7 +27,7 @@ class MovieDetailBloc {
     return ScanStreamTransformer(
       (Future<Trailer> trailer, String id, int index) {
         print(index);
-        trailer = _repository.fetchTrailers(id);
+        trailer = _movieRepository.getTrailer(movieId: id);
         return trailer;
       },
     );

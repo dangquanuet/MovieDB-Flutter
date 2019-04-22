@@ -4,14 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:loadmore/loadmore.dart';
 import 'package:meta/meta.dart';
 import 'package:moviedb_flutter/data/models/movie.dart';
-import 'package:moviedb_flutter/data/remote/movie_repo.dart';
+import 'package:moviedb_flutter/data/repositories/movie_repository.dart';
 import 'package:moviedb_flutter/ui/screens/moviedetail/detail_page.dart';
 import 'package:rxdart/rxdart.dart';
 
 const ITEM_PER_PAGE = 20;
 
 class _MyHomePageState extends State<MyHomePage> {
-  var movieDataSource = MovieDataSource.getInstance();
+  var movieDataSource = MovieRepository.getInstance();
   var listItem = <Movie>[];
   GlobalKey<ScaffoldState> scaffoldKey;
   var currentPage = 0;
@@ -130,7 +130,7 @@ class MovieWidget extends StatefulWidget {
 
 class MovieWidgetState extends State<MovieWidget> {
   Movie _movie;
-  MovieDataSource _dataSource;
+  MovieRepository _dataSource;
   bool _isLoading;
 
   @override
@@ -138,8 +138,8 @@ class MovieWidgetState extends State<MovieWidget> {
     super.initState();
     _movie = widget.movie;
     _isLoading = true;
-    _dataSource = MovieDataSource.getInstance()
-      ..isFavorite(id: _movie.id).then((b) => setState(() {
+    _dataSource = MovieRepository.getInstance()
+      ..isFavorite(_movie.id).then((b) => setState(() {
             _isLoading = false;
             _movie.isFavorite = b;
           }));
@@ -202,8 +202,8 @@ class MovieWidgetState extends State<MovieWidget> {
     final isFavorite = !_movie.isFavorite;
 
     var res = isFavorite
-        ? await _dataSource.insertFavorite(movie: _movie)
-        : await _dataSource.removeFavorite(id: _movie.id);
+        ? await _dataSource.insertFavorite(_movie)
+        : await _dataSource.removeFavorite(_movie.id);
     debugPrint("${isFavorite ? "insert" : "delete"}, res = $res");
 
     setState(() {

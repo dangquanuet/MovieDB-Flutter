@@ -2,15 +2,19 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:moviedb_flutter/data/local/favorite_movie_db.dart';
 import 'package:moviedb_flutter/data/models/movie.dart';
+import 'package:moviedb_flutter/data/models/trailer_model.dart';
 import 'package:moviedb_flutter/data/remote/response/MovieListResponse.dart';
 
 abstract class MovieRepository {
   Future<MovieListResponse> discoverMovies(int page);
 
   Future<List<Movie>> getMovies(String query);
+
+  Future<Trailer> getTrailer({@required String movieId});
 
   Future<List<Movie>> getFavoriteMovies();
 
@@ -72,6 +76,17 @@ class _MovieRepository implements MovieRepository {
             .map((json) => Movie.fromJson(json))
             .toList()
         : throw HttpException(decoded[STATUS_MESSAGE]);
+  }
+
+  @override
+  Future<Trailer> getTrailer({String movieId}) async {
+    final response =
+        await http.get("$BASE_URL/$movieId/videos?api_key=$API_KEY");
+    if (response.statusCode == 200) {
+      return Trailer.fromJson(json.decode(response.body));
+    } else {
+      throw Exception('Failed to load trailers');
+    }
   }
 
   @override
