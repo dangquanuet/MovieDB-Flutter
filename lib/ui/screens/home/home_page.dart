@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:loadmore/loadmore.dart';
 import 'package:meta/meta.dart';
 import 'package:moviedb_flutter/data/models/movie.dart';
 import 'package:moviedb_flutter/data/repositories/movie_repository.dart';
@@ -93,19 +92,13 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Container(
         child: RefreshIndicator(
-            child: LoadMore(
-                isFinish: isLastPage,
-                onLoadMore: loadMore,
-                whenEmptyLoad: false,
-                delegate: DefaultLoadMoreDelegate(),
-                textBuilder: DefaultLoadMoreTextBuilder.english,
-                child: GridView.builder(
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2),
-                  itemCount: listItem.length,
-                  itemBuilder: (context, index) =>
-                      MovieWidget(movie: listItem[index]),
-                )),
+            child: GridView.builder(
+              gridDelegate:
+                  SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
+              itemCount: listItem.length,
+              itemBuilder: (context, index) =>
+                  MovieWidget(movie: listItem[index]),
+            ),
             onRefresh: refresh));
   }
 }
