@@ -8,7 +8,7 @@ abstract class PlatformWidget<I extends Widget, A extends Widget>
   Widget build(BuildContext context) {
     if (Platform.isAndroid) {
       return createAndroidWidget(context);
-    } else {
+    } else if (Platform.isIOS) {
       return createIosWidget(context);
     }
   }

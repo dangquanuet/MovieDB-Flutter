@@ -58,7 +58,7 @@ class _MovieRepository implements MovieRepository {
     final response = await http.get(url);
     final decoded = json.decode(response.body);
 
-    return response.statusCode == HttpStatus.OK
+    return response.statusCode == HttpStatus.ok
         ? MovieListResponse.fromJson(decoded)
         : throw HttpException(decoded[STATUS_MESSAGE]);
   }
@@ -73,7 +73,7 @@ class _MovieRepository implements MovieRepository {
     final response = await http.get(url);
     final decoded = json.decode(response.body);
 
-    return response.statusCode == HttpStatus.OK
+    return response.statusCode == HttpStatus.ok
         ? (decoded[RESULTS] as List)
             .map((json) => Movie.fromJson(json))
             .toList()
@@ -83,8 +83,8 @@ class _MovieRepository implements MovieRepository {
   @override
   Future<Trailer> getTrailer({String movieId}) async {
     final response =
-        await http.get("$BASE_URL/$movieId/videos?api_key=$API_KEY");
-    if (response.statusCode == 200) {
+        await http.get("$BASE_URL/$movieId/videos?$API_KEY=$MOVIE_API_KEY");
+    if (response.statusCode == HttpStatus.ok) {
       return Trailer.fromJson(json.decode(response.body));
     } else {
       throw Exception('Failed to load trailers');
@@ -116,7 +116,7 @@ class _MovieRepository implements MovieRepository {
     final response = await http.get(url);
     final decoded = json.decode(response.body);
 
-    return response.statusCode == HttpStatus.OK
+    return response.statusCode == HttpStatus.ok
         ? Movie.fromJson(decoded)
         : throw HttpException(decoded[STATUS_MESSAGE]);
   }
