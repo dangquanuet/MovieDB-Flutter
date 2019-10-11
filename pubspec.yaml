@@ -27,6 +27,10 @@ dependencies:
   rxdart: ^0.21.0
   path_provider: ^0.4.0
   sqflite: ^0.11.0+1
+  shared_preferences: ^0.5.3+4
+
+  # dependency injection
+  get_it: ^1.0.3
 
 dev_dependencies:
   flutter_test:
