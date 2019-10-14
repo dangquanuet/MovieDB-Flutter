@@ -4,13 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:meta/meta.dart';
 import 'package:moviedb_flutter/data/models/movie.dart';
 import 'package:moviedb_flutter/data/repositories/movie_repository.dart';
+import 'package:moviedb_flutter/di/service_locator.dart';
 import 'package:moviedb_flutter/ui/screens/moviedetail/detail_page.dart';
 import 'package:rxdart/rxdart.dart';
 
 const ITEM_PER_PAGE = 20;
 
 class _MyHomePageState extends State<MyHomePage> {
-  var movieDataSource = MovieRepository.getInstance();
+  final movieRepository = getIt.get<MovieRepository>();
   var listItem = <Movie>[];
   GlobalKey<ScaffoldState> scaffoldKey;
   var currentPage = 0;
@@ -36,7 +37,7 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   loadData(int page) {
-    Observable.fromFuture(movieDataSource.discoverMovies(page))
+    Observable.fromFuture(movieRepository.discoverMovies(page))
 //        .doOnListen(onListen)
         .listen((response) => onSuccess(page, response.results),
             onError: onError);
@@ -123,7 +124,7 @@ class MovieWidget extends StatefulWidget {
 
 class MovieWidgetState extends State<MovieWidget> {
   Movie _movie;
-  MovieRepository _dataSource;
+  final _movieRepository = getIt.get<MovieRepository>();
   bool _isLoading;
 
   @override
@@ -131,7 +132,7 @@ class MovieWidgetState extends State<MovieWidget> {
     super.initState();
     _movie = widget.movie;
     _isLoading = true;
-    _dataSource = MovieRepository.getInstance()
+    _movieRepository
       ..isFavorite(_movie.id).then((b) => setState(() {
             _isLoading = false;
             _movie.isFavorite = b;
@@ -195,8 +196,8 @@ class MovieWidgetState extends State<MovieWidget> {
     final isFavorite = !_movie.isFavorite;
 
     var res = isFavorite
-        ? await _dataSource.insertFavorite(_movie)
-        : await _dataSource.removeFavorite(_movie.id);
+        ? await _movieRepository.insertFavorite(_movie)
+        : await _movieRepository.removeFavorite(_movie.id);
     debugPrint("${isFavorite ? "insert" : "delete"}, res = $res");
 
     setState(() {

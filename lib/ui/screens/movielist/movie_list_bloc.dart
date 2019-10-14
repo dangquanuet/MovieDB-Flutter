@@ -1,13 +1,13 @@
 import 'package:moviedb_flutter/data/models/movie.dart';
 import 'package:moviedb_flutter/data/remote/response/MovieListResponse.dart';
 import 'package:moviedb_flutter/data/repositories/movie_repository.dart';
+import 'package:moviedb_flutter/di/service_locator.dart';
 import 'package:moviedb_flutter/ui/base/base_load_more_refresh_bloc.dart';
-import 'package:rxdart/rxdart.dart';
 
 class MovieListBloc extends BaseLoadMoreRefreshBloc<Movie> {
-  final _movieRepository = MovieRepository.getInstance();
+  final _movieRepository = getIt.get<MovieRepository>();
 
-  Observable<List> get movieList => dataFetcher.stream;
+//  Observable<List> get movieList => dataFetcher.stream;
 
   @override
   void loadData(int page) async {

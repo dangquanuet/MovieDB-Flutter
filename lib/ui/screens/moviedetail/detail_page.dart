@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:moviedb_flutter/data/models/movie.dart';
 import 'package:moviedb_flutter/data/repositories/movie_repository.dart';
+import 'package:moviedb_flutter/di/service_locator.dart';
 
 class DetailPage extends StatefulWidget {
   final Movie movie;
@@ -15,7 +16,8 @@ class DetailPage extends StatefulWidget {
 
 class _DetailPageState extends State<DetailPage> {
   Movie _movie;
-  MovieRepository _dataSource;
+  final _movieRepository = getIt.get<MovieRepository>();
+
   bool _isLoading;
 
   @override
@@ -23,7 +25,7 @@ class _DetailPageState extends State<DetailPage> {
     super.initState();
     _movie = widget.movie;
     _isLoading = true;
-    _dataSource = MovieRepository.getInstance()
+    _movieRepository
       ..isFavorite(_movie.id).then((b) => setState(() {
             _isLoading = false;
             _movie.isFavorite = b;
@@ -264,8 +266,8 @@ class _DetailPageState extends State<DetailPage> {
     final isFavorite = !_movie.isFavorite;
 
     var res = isFavorite
-        ? await _dataSource.insertFavorite(_movie)
-        : await _dataSource.removeFavorite(_movie.id);
+        ? await _movieRepository.insertFavorite(_movie)
+        : await _movieRepository.removeFavorite(_movie.id);
 
     setState(() {
       _movie.isFavorite = isFavorite;
@@ -273,11 +275,11 @@ class _DetailPageState extends State<DetailPage> {
   }
 
   Future<Null> _onRefresh() async {
-    var movie = await _dataSource.getMovieById(_movie.id);
+    var movie = await _movieRepository.getMovieById(_movie.id);
     movie.isFavorite = _movie.isFavorite;
     debugPrint("[DETAIL] Update...$movie");
     if (movie.isFavorite) {
-      var res = await _dataSource.insertFavorite(movie);
+      var res = await _movieRepository.insertFavorite(movie);
       debugPrint("[DETAIL] Update...$res");
     }
     setState(() {

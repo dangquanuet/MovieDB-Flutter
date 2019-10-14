@@ -1,11 +1,9 @@
 import 'package:get_it/get_it.dart';
-import 'package:moviedb_flutter/data/local/LocalStorageService.dart';
+import 'package:moviedb_flutter/data/repositories/movie_repository.dart';
 
-final locator = GetIt();
+final getIt = GetIt.instance;
 
-void setupDI() async {
-  locator.registerSingleton<LocalStorageService>(
-      await LocalStorageService.getInstance());
-
-  print('DI done');
+void setup() async {
+  getIt.registerLazySingleton<MovieRepository>(
+      () => MovieRepository.getInstance());
 }

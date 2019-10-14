@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:moviedb_flutter/data/models/movie.dart';
 import 'package:moviedb_flutter/data/repositories/movie_repository.dart';
+import 'package:moviedb_flutter/di/service_locator.dart';
 import 'package:moviedb_flutter/ui/screens/moviedetail/detail_page.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -16,7 +17,7 @@ class FavoritePage extends StatefulWidget {
 }
 
 class _FavoritePageState extends State<FavoritePage> {
-  MovieRepository _dataSource;
+  final _movieRepository = getIt.get<MovieRepository>();
   PublishSubject<String> _subject;
   List<Movie> _movies;
   bool _isLoading;
@@ -33,19 +34,17 @@ class _FavoritePageState extends State<FavoritePage> {
 
     _subject = PublishSubject()
       ..stream
-          .debounce(Duration(milliseconds: 300))
+          .debounceTime(Duration(milliseconds: 300))
           .distinct()
           .map((query) => query.toLowerCase())
           .switchMap(searchMovie)
           .listen(onData, onError: onError);
 
-    _dataSource = MovieRepository.getInstance();
-
     _subject.add('');
   }
 
   Stream<Iterable<Movie>> searchMovie(String query) {
-    return Observable.fromFuture(_dataSource.getFavoriteMovies())
+    return Observable.fromFuture(_movieRepository.getFavoriteMovies())
         .map((list) => query.trim() == ''
             ? list
             : list.where((movie) => movie.title.toLowerCase().contains(query)))
@@ -105,7 +104,7 @@ class _FavoritePageState extends State<FavoritePage> {
   }
 
   _onDismissed(String id) async {
-    var res = await _dataSource.removeFavorite(id);
+    var res = await _movieRepository.removeFavorite(id);
     if (res != 0) {
       setState(() => _movies.removeWhere((m) => m.id == id));
     } else {

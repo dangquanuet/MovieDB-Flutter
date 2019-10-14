@@ -7,11 +7,11 @@ import 'package:moviedb_flutter/ui/screens/movielist/movie_list.dart';
 import 'package:moviedb_flutter/ui/screens/movielist/movie_list_bloc.dart';
 
 void main() {
+  // setup dependency injection
+  setup();
+
   // run app
   runApp(App());
-
-  // setup dependency injection
-  setupDI();
 }
 
 class App extends StatelessWidget {
