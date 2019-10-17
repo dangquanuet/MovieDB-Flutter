@@ -58,9 +58,14 @@ class _MovieRepository implements MovieRepository {
     final response = await http.get(url);
     final decoded = json.decode(response.body);
 
-    return response.statusCode == HttpStatus.ok
-        ? MovieListResponse.fromJson(decoded)
-        : throw HttpException(decoded[STATUS_MESSAGE]);
+    switch (response.statusCode) {
+      case HttpStatus.ok:
+        return MovieListResponse.fromJson(decoded);
+        break;
+
+      default:
+        throw HttpException(decoded[STATUS_MESSAGE]);
+    }
   }
 
   @override

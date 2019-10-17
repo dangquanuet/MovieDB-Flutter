@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/widgets.dart';
 
-abstract class PlatformWidget<I extends Widget, A extends Widget>
+abstract class PlatformWidget<iOS extends Widget, Android extends Widget>
     extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -10,10 +10,14 @@ abstract class PlatformWidget<I extends Widget, A extends Widget>
       return createAndroidWidget(context);
     } else if (Platform.isIOS) {
       return createIosWidget(context);
+    } else {
+      return createDefaultWidget(context);
     }
   }
 
-  I createIosWidget(BuildContext context);
+  iOS createIosWidget(BuildContext context);
 
-  A createAndroidWidget(BuildContext context);
+  Android createAndroidWidget(BuildContext context);
+
+  Widget createDefaultWidget(BuildContext context);
 }

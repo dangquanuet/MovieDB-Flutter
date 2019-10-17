@@ -3,7 +3,7 @@ import 'package:moviedb_flutter/data/repositories/movie_repository.dart';
 
 final getIt = GetIt.instance;
 
-void setup() async {
+void setupDI() async {
   getIt.registerLazySingleton<MovieRepository>(
       () => MovieRepository.getInstance());
 }

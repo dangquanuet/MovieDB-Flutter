@@ -1,31 +1,34 @@
-import 'package:rxdart/rxdart.dart';
+import 'package:flutter/foundation.dart';
 
-abstract class BaseBloc<T> {
+abstract class BaseBloc with ChangeNotifier {
   var isLoading = false;
   var errorMessage;
 
   final noInternetConnectionEvent = false;
   final connectTimeoutEvent = false;
 
-  final dataFetcher = PublishSubject<T>();
-
-  void onLoadFail() {
+  void onLoadFail(Exception exception) {
     isLoading = false;
+    showError(exception.toString());
+    notifyListeners();
   }
 
   void showError(String message) {
     errorMessage = message;
+    notifyListeners();
   }
 
   void showLoading() {
     isLoading = true;
+    notifyListeners();
   }
 
   void hideLoading() {
     isLoading = false;
+    notifyListeners();
   }
 
   void dispose() {
-    dataFetcher.close();
+//    dataFetcher.close();
   }
 }

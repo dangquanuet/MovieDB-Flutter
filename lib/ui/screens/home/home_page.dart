@@ -5,7 +5,6 @@ import 'package:meta/meta.dart';
 import 'package:moviedb_flutter/data/models/movie.dart';
 import 'package:moviedb_flutter/data/repositories/movie_repository.dart';
 import 'package:moviedb_flutter/di/service_locator.dart';
-import 'package:moviedb_flutter/ui/screens/moviedetail/detail_page.dart';
 import 'package:rxdart/rxdart.dart';
 
 const ITEM_PER_PAGE = 20;
@@ -184,11 +183,7 @@ class MovieWidgetState extends State<MovieWidget> {
 
     return GestureDetector(
       child: thumbnail,
-      onTap: () {
-        Navigator.push(context, MaterialPageRoute(builder: (ctx) {
-          return DetailPage(movie: _movie);
-        }));
-      },
+      onTap: () {},
     );
   }
 

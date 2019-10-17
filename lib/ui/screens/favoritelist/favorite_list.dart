@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:moviedb_flutter/data/models/movie.dart';
 import 'package:moviedb_flutter/data/repositories/movie_repository.dart';
 import 'package:moviedb_flutter/di/service_locator.dart';
-import 'package:moviedb_flutter/ui/screens/moviedetail/detail_page.dart';
 import 'package:rxdart/rxdart.dart';
 
 class FavoritePage extends StatefulWidget {
@@ -254,9 +253,9 @@ class _FavoritePageState extends State<FavoritePage> {
           ),
         ),
         onTap: () {
-          Navigator.push(context, MaterialPageRoute(builder: (ctx) {
-            return DetailPage(movie: m);
-          }));
+//          Navigator.push(context, MaterialPageRoute(builder: (ctx) {
+//            return DetailPage(movie: m);
+//          }));
         },
       ),
       key: Key(m.id),

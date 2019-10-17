@@ -1,14 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:moviedb_flutter/di/service_locator.dart';
-import 'package:moviedb_flutter/ui/base/bloc_provider.dart';
-import 'package:moviedb_flutter/ui/screens/favoritelist/favorite_list.dart';
-import 'package:moviedb_flutter/ui/screens/home/home_page.dart';
-import 'package:moviedb_flutter/ui/screens/movielist/movie_list.dart';
-import 'package:moviedb_flutter/ui/screens/movielist/movie_list_bloc.dart';
+import 'package:moviedb_flutter/ui/screens/movielist/movie_llist_widget.dart';
 
 void main() {
   // setup dependency injection
-  setup();
+  setupDI();
 
   // run app
   runApp(App());
@@ -19,21 +15,12 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: ThemeData.dark(),
-      home: Scaffold(
-        body: buildMovieList(),
-      ),
-    );
-  }
-
-  Widget buildMovieList() {
-    return BlocProvider<MovieListBloc>(
-      child: MovieListWidget(),
-      bloc: MovieListBloc(),
+      home: Scaffold(body: buildMovieListWidget()),
     );
   }
 }
 
-class MyApp extends StatelessWidget {
+/*class MyApp extends StatelessWidget {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey();
 
   @override
@@ -63,4 +50,4 @@ class MyApp extends StatelessWidget {
       ),
     );
   }
-}
+}*/

@@ -1,97 +1,114 @@
 import 'package:moviedb_flutter/ui/base/base_bloc.dart';
-import 'package:moviedb_flutter/utils/constants.dart';
 
-abstract class BaseLoadMoreRefreshBloc<Item> extends BaseBloc<List<Item>> {
+abstract class BaseLoadMoreRefreshBloc<Item> extends BaseBloc {
   BaseLoadMoreRefreshBloc() {
-    currentPage = _getPreFirstPage();
+    _currentPage = _getPreFirstPage();
   }
 
-  var isRefreshing = false;
+  final _firstPage = 1;
+  final _visibleThreshold = 5;
+  final _itemPerPage = 10;
+  final itemList = List<Item>();
+  var isEmptyList = false;
 
+  var _isRefreshing = false;
+
+  // refresh listener for swipe refresh layout
   Future onRefreshListener() async {
-    if (isLoading == true || isRefreshing == true) return;
-    isRefreshing = true;
+    if (isLoading == true || _isRefreshing == true) return;
+    _isRefreshing = true;
     refreshData();
   }
 
   var isLoadMore = false;
-  var currentPage = 0;
-  var isLastPage = false;
+  var _currentPage;
+  var _isLastPage = false;
 
+  // scroll listener for recycler view
   void onScrollListener(int index) {
-    if (index + getLoadMoreThreshold() >= listItem.length) {
+    if (index + getLoadMoreThreshold() >= itemList.length) {
       if (isLoading == true ||
-          isRefreshing == true ||
+          _isRefreshing == true ||
           isLoadMore == true ||
-          isLastPage == true) return;
+          _isLastPage == true) return;
       isLoadMore = true;
+      notifyListeners();
       loadMore();
     }
   }
 
-  final listItem = List<Item>();
-  var isEmptyList = false;
-
+  /// load data
   void loadData(int page);
 
-  bool _isFirst() => currentPage == _getPreFirstPage() && listItem.isEmpty;
+  /// check first time load data
+  bool _isFirst() => _currentPage == _getPreFirstPage() && itemList.isEmpty;
 
+  /// first load
   void firstLoad() {
     if (_isFirst()) {
-      isLoading = true;
+      showLoading();
       loadData(getFirstPage());
     }
   }
 
+  /// load first page
   void refreshData() {
     loadData(getFirstPage());
   }
 
+  /// load next page
   void loadMore() {
-    loadData(currentPage + 1);
+    loadData(_currentPage + 1);
   }
 
-  // override if first page is not 1
-  int getFirstPage() => Constants.DEFAULT_FIRST_PAGE;
+  /// override if first page is not 1
+  int getFirstPage() => _firstPage;
 
   int _getPreFirstPage() => getFirstPage() - 1;
 
-  // override if need change number visible threshold
-  int getLoadMoreThreshold() => Constants.DEFAULT_NUM_VISIBLE_THRESHOLD;
+  /// override if need change number visible threshold
+  int getLoadMoreThreshold() => _visibleThreshold;
 
-  // override if need change number item per page
-  int getNumberItemPerPage() => Constants.DEFAULT_ITEM_PER_PAGE;
+  /// override if need change number item per page
+  int getNumberItemPerPage() => _itemPerPage;
 
+  /// reset load more
   void resetLoadMore() {
-    isLastPage = false;
+    _isLastPage = false;
   }
 
+  /// handle load success
   void onLoadSuccess(int page, List<Item> items) {
-    currentPage = page;
-    if (currentPage == getFirstPage()) listItem.clear();
-    if (isRefreshing) resetLoadMore();
+    _currentPage = page;
+    if (_currentPage == getFirstPage()) itemList.clear();
+    if (_isRefreshing) resetLoadMore();
 
-    listItem.addAll(items);
-    dataFetcher.sink.add(listItem);
+    itemList.addAll(items);
 
-    isLastPage = items.length < getNumberItemPerPage();
+    _isLastPage = items.length < getNumberItemPerPage();
     isLoading = false;
-    isRefreshing = false;
+    _isRefreshing = false;
     isLoadMore = false;
 
     _checkEmptyList();
+
+    notifyListeners();
   }
 
+  /// handle load fail
   @override
-  void onLoadFail() {
-    super.onLoadFail();
-    isRefreshing = false;
+  void onLoadFail(Exception exception) {
+    super.onLoadFail(exception);
+    _isRefreshing = false;
     isLoadMore = false;
 
     _checkEmptyList();
+
+    notifyListeners();
   }
 
+  /// check list is empty
   void _checkEmptyList() {
-    isEmptyList = listItem.isEmpty;
+    isEmptyList = itemList.isEmpty;
   }
 }
