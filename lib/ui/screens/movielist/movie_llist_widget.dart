@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:moviedb_flutter/data/models/movie.dart';
 import 'package:moviedb_flutter/ui/screens/moviedetail/movie_detail_widget.dart';
@@ -39,22 +41,29 @@ class MovieListWidget extends StatelessWidget {
               var movie = movieList[index];
               return GestureDetector(
                 onTap: () => openDetailPage(context, movie),
-                child: GridTile(
-                  child: Image.network(
-                    getSmallImageUrl(movie.posterPath),
-                  ),
-                  footer: Container(
-                    decoration:
-                        BoxDecoration(color: Colors.grey[900].withOpacity(0.5)),
-                    child: Padding(
-                      padding: EdgeInsets.all(6),
-                      child: Text(
-                        movie.title,
-                        style: TextStyle(color: Colors.white, fontSize: 16),
-                        textAlign: TextAlign.center,
+                child: Stack(
+                  children: <Widget>[
+                    SizedBox.expand(
+                      child: Image.network(
+                        getSmallImageUrl(movie.posterPath),
+                        alignment: Alignment.center,
                       ),
                     ),
-                  ),
+                    Align(
+                      alignment: Alignment.bottomCenter,
+                      child: Container(
+                        width: double.infinity,
+                        padding: EdgeInsets.all(6),
+                        decoration: BoxDecoration(
+                            color: Colors.grey[900].withOpacity(0.5)),
+                        child: Text(
+                          movie.title,
+                          style: TextStyle(color: Colors.white, fontSize: 16),
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                    )
+                  ],
                 ),
               );
             }),
