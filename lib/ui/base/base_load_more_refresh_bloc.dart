@@ -32,7 +32,7 @@ abstract class BaseLoadMoreRefreshBloc<Item> extends BaseBloc {
           isLoadMore == true ||
           _isLastPage == true) return;
       isLoadMore = true;
-      notifyListeners();
+//      notifyListeners();
       loadMore();
     }
   }

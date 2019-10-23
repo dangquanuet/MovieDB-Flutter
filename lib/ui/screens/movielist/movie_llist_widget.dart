@@ -33,6 +33,7 @@ class MovieListWidget extends StatelessWidget {
       return RefreshIndicator(
         onRefresh: bloc.onRefreshListener,
         child: GridView.builder(
+            physics: BouncingScrollPhysics(),
             itemCount: movieList.length,
             gridDelegate:
                 SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),

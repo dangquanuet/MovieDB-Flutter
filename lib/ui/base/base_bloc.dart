@@ -10,22 +10,22 @@ abstract class BaseBloc with ChangeNotifier {
   void onLoadFail(Exception exception) {
     isLoading = false;
     showError(exception.toString());
-    notifyListeners();
+//    notifyListeners();
   }
 
   void showError(String message) {
     errorMessage = message;
-    notifyListeners();
+//    notifyListeners();
   }
 
   void showLoading() {
     isLoading = true;
-    notifyListeners();
+//    notifyListeners();
   }
 
   void hideLoading() {
     isLoading = false;
-    notifyListeners();
+//    notifyListeners();
   }
 
   void dispose() {
