@@ -30,44 +30,51 @@ class MovieListWidget extends StatelessWidget {
     if (bloc.isLoading) {
       return Center(child: PlatformProgress());
     } else {
-      return RefreshIndicator(
-        onRefresh: bloc.onRefreshListener,
-        child: GridView.builder(
-            physics: BouncingScrollPhysics(),
-            itemCount: movieList.length,
-            gridDelegate:
-                SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
-            itemBuilder: (BuildContext context, int index) {
-              bloc.onScrollListener(index);
-              var movie = movieList[index];
-              return GestureDetector(
-                onTap: () => openDetailPage(context, movie),
-                child: Stack(
-                  children: <Widget>[
-                    SizedBox.expand(
-                      child: Image.network(
-                        getSmallImageUrl(movie.posterPath),
-                        alignment: Alignment.center,
+      return Column(
+        children: <Widget>[
+          Expanded(
+            child: RefreshIndicator(
+              onRefresh: bloc.onRefreshListener,
+              child: GridView.builder(
+                  physics: BouncingScrollPhysics(),
+                  itemCount: movieList.length,
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2),
+                  itemBuilder: (BuildContext context, int index) {
+                    bloc.onScrollListener(index);
+                    var movie = movieList[index];
+                    return GestureDetector(
+                      onTap: () => openDetailPage(context, movie),
+                      child: Stack(
+                        children: <Widget>[
+                          SizedBox.expand(
+                              child: Image.network(
+                            getSmallImageUrl(movie.posterPath),
+                            alignment: Alignment.center,
+                          )),
+                          Align(
+                            alignment: Alignment.bottomCenter,
+                            child: Container(
+                              width: double.infinity,
+                              padding: EdgeInsets.all(6),
+                              decoration: BoxDecoration(
+                                  color: Colors.grey[900].withOpacity(0.5)),
+                              child: Text(
+                                movie.title,
+                                style: TextStyle(
+                                    color: Colors.white, fontSize: 16),
+                                textAlign: TextAlign.center,
+                              ),
+                            ),
+                          )
+                        ],
                       ),
-                    ),
-                    Align(
-                      alignment: Alignment.bottomCenter,
-                      child: Container(
-                        width: double.infinity,
-                        padding: EdgeInsets.all(6),
-                        decoration: BoxDecoration(
-                            color: Colors.grey[900].withOpacity(0.5)),
-                        child: Text(
-                          movie.title,
-                          style: TextStyle(color: Colors.white, fontSize: 16),
-                          textAlign: TextAlign.center,
-                        ),
-                      ),
-                    )
-                  ],
-                ),
-              );
-            }),
+                    );
+                  }),
+            ),
+          ),
+          if (bloc.isLoadMore) PlatformProgress()
+        ],
       );
     }
   }

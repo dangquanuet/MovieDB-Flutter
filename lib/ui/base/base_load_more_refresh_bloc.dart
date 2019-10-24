@@ -1,3 +1,4 @@
+import 'package:flutter/scheduler.dart';
 import 'package:moviedb_flutter/ui/base/base_bloc.dart';
 
 abstract class BaseLoadMoreRefreshBloc<Item> extends BaseBloc {
@@ -26,15 +27,17 @@ abstract class BaseLoadMoreRefreshBloc<Item> extends BaseBloc {
 
   // scroll listener for recycler view
   void onScrollListener(int index) {
-    if (index + getLoadMoreThreshold() >= itemList.length) {
-      if (isLoading == true ||
-          _isRefreshing == true ||
-          isLoadMore == true ||
-          _isLastPage == true) return;
-      isLoadMore = true;
-//      notifyListeners();
-      loadMore();
-    }
+    SchedulerBinding.instance.addPostFrameCallback((duration) {
+      if (index + getLoadMoreThreshold() >= itemList.length) {
+        if (isLoading == true ||
+            _isRefreshing == true ||
+            isLoadMore == true ||
+            _isLastPage == true) return;
+        isLoadMore = true;
+        notifyListeners();
+        loadMore();
+      }
+    });
   }
 
   /// load data
