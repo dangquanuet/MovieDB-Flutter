@@ -43,7 +43,7 @@ class _FavoritePageState extends State<FavoritePage> {
   }
 
   Stream<Iterable<Movie>> searchMovie(String query) {
-    return Observable.fromFuture(_movieRepository.getFavoriteMovies())
+    return Stream.fromFuture(_movieRepository.getFavoriteMovies())
         .map((list) => query.trim() == ''
             ? list
             : list.where((movie) => movie.title.toLowerCase().contains(query)))

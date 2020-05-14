@@ -5,7 +5,6 @@ import 'package:meta/meta.dart';
 import 'package:moviedb_flutter/data/models/movie.dart';
 import 'package:moviedb_flutter/data/repositories/movie_repository.dart';
 import 'package:moviedb_flutter/di/service_locator.dart';
-import 'package:rxdart/rxdart.dart';
 
 const ITEM_PER_PAGE = 20;
 
@@ -36,7 +35,7 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   loadData(int page) {
-    Observable.fromFuture(movieRepository.discoverMovies(page))
+    Stream.fromFuture(movieRepository.discoverMovies(page))
 //        .doOnListen(onListen)
         .listen((response) => onSuccess(page, response.results),
             onError: onError);

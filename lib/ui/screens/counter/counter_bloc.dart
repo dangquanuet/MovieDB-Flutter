@@ -8,7 +8,7 @@ class CounterBloc {
     _subjectCounter = BehaviorSubject<int>.seeded(this.initialCount);
   }
 
-  Observable<int> get counterObservable => _subjectCounter.stream;
+  Stream<int> get counterObservable => _subjectCounter.stream;
 
   void increment() {
     initialCount++;

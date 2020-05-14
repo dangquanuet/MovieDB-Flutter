@@ -11,7 +11,7 @@ import 'package:provider/provider.dart';
 /// build MovieListWidget with ChangeNotifierProvider
 Widget buildMovieListWidget() {
   return ChangeNotifierProvider<MovieListBloc>(
-    builder: (context) => MovieListBloc(),
+    create: (context) => MovieListBloc(),
     child: MovieListWidget(),
   );
 }
