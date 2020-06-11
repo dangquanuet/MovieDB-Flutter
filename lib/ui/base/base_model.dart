@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
 
-abstract class BaseBloc with ChangeNotifier {
+abstract class BaseModel with ChangeNotifier {
   var isLoading = false;
   var errorMessage;
 
@@ -26,9 +26,5 @@ abstract class BaseBloc with ChangeNotifier {
   void hideLoading() {
     isLoading = false;
 //    notifyListeners();
-  }
-
-  void dispose() {
-//    dataFetcher.close();
   }
 }

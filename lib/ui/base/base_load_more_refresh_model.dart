@@ -1,14 +1,15 @@
 import 'package:flutter/scheduler.dart';
-import 'package:moviedb_flutter/ui/base/base_bloc.dart';
+import 'package:moviedb_flutter/ui/base/base_model.dart';
 
-abstract class BaseLoadMoreRefreshBloc<Item> extends BaseBloc {
-  BaseLoadMoreRefreshBloc() {
+abstract class BaseLoadMoreRefreshModel<Item> extends BaseModel {
+  BaseLoadMoreRefreshModel() {
     _currentPage = _getPreFirstPage();
   }
 
   final _firstPage = 1;
   final _visibleThreshold = 5;
   final _itemPerPage = 10;
+
   final itemList = List<Item>();
   var isEmptyList = false;
 

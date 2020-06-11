@@ -1,5 +1,5 @@
-import 'package:moviedb_flutter/ui/base/base_bloc.dart';
+import 'package:moviedb_flutter/ui/base/base_model.dart';
 
-class FavoriteListBLoc extends BaseBloc {
+class FavoriteListModel extends BaseModel {
 
 }

@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:moviedb_flutter/data/models/movie.dart';
-import 'package:moviedb_flutter/ui/screens/moviedetail/movie_detail_bloc.dart';
 import 'package:moviedb_flutter/utils/utils.dart';
 import 'package:provider/provider.dart';
 
+import 'movie_detail_model.dart';
+
 /// build MovieListWidget with ChangeNotifierProvider
 Widget buildMovieDetailWidget(Movie movie) {
-  return ChangeNotifierProvider<MovieDetailBloc>(
-    create: (context) => MovieDetailBloc(),
+  return ChangeNotifierProvider<MovieDetailModel>(
+    create: (context) => MovieDetailModel(),
     child: MovieDetailWidget(movie),
   );
 }
