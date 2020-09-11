@@ -1,13 +1,19 @@
+import 'dart:async';
+import 'dart:io';
+
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:moviedb_flutter/data/models/movie.dart';
 import 'package:moviedb_flutter/di/service_locator.dart';
-import 'package:moviedb_flutter/ui/screens/movielistbloc/bloc.dart';
+import 'package:moviedb_flutter/ui/screens/moviedetailprovider/movie_detail_widget.dart';
 import 'package:moviedb_flutter/ui/screens/movielistbloc/movie_list_bloc.dart';
 import 'package:moviedb_flutter/ui/screens/movielistbloc/movie_list_state.dart';
 import 'package:moviedb_flutter/ui/widgets/platform_progress.dart';
 import 'package:moviedb_flutter/utils/utils.dart';
+
+import 'movie_list_event.dart';
 
 void main() {
   // setup dependency injection
@@ -20,9 +26,10 @@ class BlocApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       home: Scaffold(
         body: BlocProvider(
-          create: (context) => MovieListBloc()..add(Load()),
+          create: (context) => MovieListBloc(),
           child: MovieList(),
         ),
       ),
@@ -37,16 +44,26 @@ class MovieList extends StatefulWidget {
 
 class _MovieListState extends State<MovieList> {
   MovieListBloc _movieListBloc;
+  final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
+      GlobalKey<RefreshIndicatorState>();
+  Completer<void> _refreshCompleter = Completer<void>();
 
   @override
   void initState() {
     super.initState();
     _movieListBloc = BlocProvider.of<MovieListBloc>(context);
+    _movieListBloc.add(Load());
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<MovieListBloc, MovieListState>(
+    return BlocConsumer<MovieListBloc, MovieListState>(
+      listener: (context, state) {
+        if (state is LoadSuccessState) {
+          _refreshCompleter?.complete();
+          _refreshCompleter = Completer();
+        }
+      },
       builder: (context, state) {
         if (state is LoadingState) {
           return Center(
@@ -70,17 +87,27 @@ class _MovieListState extends State<MovieList> {
   }
 
   Widget buildList(List<Movie> movieList) {
-    return GridView.builder(
-      physics: BouncingScrollPhysics(),
-      itemCount: movieList.length,
-      gridDelegate:
-          SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
-      itemBuilder: (BuildContext context, int index) {
-        if (index + 3 >= movieList.length) {
-          _movieListBloc.add(LoadMore());
-        }
-        return buildMovieItem(context, movieList[index]);
-      },
+    return RefreshIndicator(
+      key: _refreshIndicatorKey,
+      onRefresh: _refresh,
+      child: GridView.builder(
+        physics: Platform.isAndroid
+            ? ClampingScrollPhysics()
+            : BouncingScrollPhysics(),
+        itemCount: movieList.length,
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 2,
+          childAspectRatio: 0.6,
+        ),
+        itemBuilder: (BuildContext context, int index) {
+          print(index);
+          if (index + 5 >= movieList.length) {
+            print('loadmore');
+            _movieListBloc.add(LoadMore());
+          }
+          return buildMovieItem(context, movieList[index]);
+        },
+      ),
     );
   }
 
@@ -90,9 +117,10 @@ class _MovieListState extends State<MovieList> {
       child: Stack(
         children: <Widget>[
           SizedBox.expand(
-              child: Image.network(
-            getSmallImageUrl(movie.posterPath),
+              child: CachedNetworkImage(
+            imageUrl: getSmallImageUrl(movie.posterPath),
             alignment: Alignment.center,
+            fit: BoxFit.cover,
           )),
           Align(
             alignment: Alignment.bottomCenter,
@@ -113,14 +141,19 @@ class _MovieListState extends State<MovieList> {
     );
   }
 
+  Future<void> _refresh() async {
+    _movieListBloc.add(Refresh());
+    return _refreshCompleter.future;
+  }
+
   /// open detail page
   void openDetailPage(BuildContext context, Movie movie) {
-//    Navigator.push(
-//      context,
-//      MaterialPageRoute(builder: (context) {
-//        return buildMovieDetailWidget(movie);
-//      }),
-//    );
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) {
+        return buildMovieDetailWidget(movie);
+      }),
+    );
   }
 }
 

@@ -29,7 +29,7 @@ class MovieDetailWidget extends StatelessWidget {
             children: <Widget>[
               GestureDetector(
                 child: Container(
-                  height: 200,
+                  height: 400,
                   child: Hero(
                     tag: imagePosterTag,
                     child: Image.network(

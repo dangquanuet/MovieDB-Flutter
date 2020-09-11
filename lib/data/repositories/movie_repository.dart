@@ -54,9 +54,12 @@ class _MovieRepository implements MovieRepository {
   Future<MovieListResponse> discoverMovies(int page) async {
     final url = Uri.https(BASE_URL, DISCOVER_MOVIE,
         {API_KEY: MOVIE_API_KEY, PAGE: page.toString()});
+
     print(url);
     final response = await http.get(url);
     final decoded = json.decode(response.body);
+    print(response.statusCode);
+    print(response.body);
 
     switch (response.statusCode) {
       case HttpStatus.ok:
