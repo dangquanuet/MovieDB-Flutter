@@ -2,8 +2,8 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:meta/meta.dart';
-import 'package:moviedb_flutter/data/models/movie.dart';
-import 'package:moviedb_flutter/data/repositories/movie_repository.dart';
+import 'package:moviedb_flutter/data/model/Movie.dart';
+import 'package:moviedb_flutter/data/repository/MovieRepository.dart';
 import 'package:moviedb_flutter/di/service_locator.dart';
 
 const ITEM_PER_PAGE = 20;

@@ -5,15 +5,15 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:moviedb_flutter/data/models/movie.dart';
+import 'package:moviedb_flutter/data/model/Movie.dart';
 import 'package:moviedb_flutter/di/service_locator.dart';
-import 'package:moviedb_flutter/ui/screens/moviedetailprovider/movie_detail_widget.dart';
-import 'package:moviedb_flutter/ui/screens/movielistbloc/movie_list_bloc.dart';
-import 'package:moviedb_flutter/ui/screens/movielistbloc/movie_list_state.dart';
-import 'package:moviedb_flutter/ui/widgets/platform_progress.dart';
-import 'package:moviedb_flutter/utils/utils.dart';
+import 'package:moviedb_flutter/ui/screen/moviedetailprovider/MovieDetailWidget.dart';
+import 'package:moviedb_flutter/ui/screen/movielistbloc/MovieListBloc.dart';
+import 'package:moviedb_flutter/ui/screen/movielistbloc/MovieListState.dart';
+import 'package:moviedb_flutter/ui/widget/platform_progress.dart';
+import 'package:moviedb_flutter/util/utils.dart';
 
-import 'movie_list_event.dart';
+import 'MovieListEvent.dart';
 
 void main() {
   // setup dependency injection

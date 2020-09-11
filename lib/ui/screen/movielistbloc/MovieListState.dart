@@ -1,5 +1,5 @@
 import 'package:meta/meta.dart';
-import 'package:moviedb_flutter/data/models/movie.dart';
+import 'package:moviedb_flutter/data/model/Movie.dart';
 
 @immutable
 abstract class MovieListState {

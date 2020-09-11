@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'api_client.dart';
+part of 'ApiClient.dart';
 
 // **************************************************************************
 // RetrofitGenerator
@@ -17,13 +17,14 @@ class _ApiClient implements ApiClient {
   String baseUrl;
 
   @override
-  discoverMovie(queries) async {
+  discoverMovie({queries}) async {
     ArgumentError.checkNotNull(queries, 'queries');
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     queryParameters.addAll(queries ?? <String, dynamic>{});
+    queryParameters.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
-    final Response<List<dynamic>> _result = await _dio.request(
+    final Response<Map<String, dynamic>> _result = await _dio.request(
         '/3/discover/movie',
         queryParameters: queryParameters,
         options: RequestOptions(
@@ -32,9 +33,7 @@ class _ApiClient implements ApiClient {
             extra: _extra,
             baseUrl: baseUrl),
         data: _data);
-    var value = _result.data
-        .map((dynamic i) => Movie.fromJson(i as Map<String, dynamic>))
-        .toList();
+    final value = MovieListResponse.fromJson(_result.data);
     return value;
   }
 }

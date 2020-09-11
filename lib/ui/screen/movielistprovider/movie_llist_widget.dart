@@ -1,10 +1,10 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:moviedb_flutter/data/models/movie.dart';
-import 'package:moviedb_flutter/ui/screens/moviedetailprovider/movie_detail_widget.dart';
-import 'package:moviedb_flutter/ui/widgets/platform_progress.dart';
-import 'package:moviedb_flutter/utils/utils.dart';
+import 'package:moviedb_flutter/data/model/Movie.dart';
+import 'package:moviedb_flutter/ui/screen/moviedetailprovider/MovieDetailWidget.dart';
+import 'package:moviedb_flutter/ui/widget/platform_progress.dart';
+import 'package:moviedb_flutter/util/utils.dart';
 import 'package:provider/provider.dart';
 
 import 'movie_list_model.dart';

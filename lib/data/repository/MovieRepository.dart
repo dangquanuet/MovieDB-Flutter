@@ -6,13 +6,17 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:logger/logger.dart';
-import 'package:moviedb_flutter/data/models/movie.dart';
-import 'package:moviedb_flutter/data/models/trailer_model.dart';
-import 'package:moviedb_flutter/data/remote/api_client.dart';
+import 'package:moviedb_flutter/data/model/Movie.dart';
+import 'package:moviedb_flutter/data/model/trailer_model.dart';
+import 'package:moviedb_flutter/data/remote/ApiClient.dart';
+import 'package:moviedb_flutter/data/remote/ServerError.dart';
+import 'package:moviedb_flutter/data/remote/response/BaseModel.dart';
 import 'package:moviedb_flutter/data/remote/response/MovieListResponse.dart';
 
 abstract class MovieRepository {
-  Future<MovieListResponse> discoverMovies(int page);
+  Future<BaseModel<MovieListResponse>> discoverMovies({@required int page});
+
+  Future<MovieListResponse> discoverMovies2(int page);
 
   Future<List<Movie>> searchMovies(String query);
 
@@ -38,15 +42,31 @@ class _MovieRepository implements MovieRepository {
 
   final Dio dio = Dio();
   final Logger logger = Logger();
-  var apiClient;
+  ApiClient apiClient;
 
   _MovieRepository() {
     apiClient = ApiClient(dio);
   }
 
   @override
-  Future<MovieListResponse> discoverMovies(int page) async {
+  Future<BaseModel<MovieListResponse>> discoverMovies(
+      {@required int page}) async {
+    MovieListResponse response;
+    try {
+      response = await apiClient.discoverMovie(
+        queries: {
+          PAGE: page,
+        },
+      );
+    } catch (error, stacktrace) {
+      print("Exception occured: $error stackTrace: $stacktrace");
+      return BaseModel()..setException(ServerError.withError(error: error));
+    }
+    return BaseModel()..data = response;
+  }
 
+  @override
+  Future<MovieListResponse> discoverMovies2(int page) async {
     final url = Uri.https(BASE_URL, DISCOVER_MOVIE,
         {API_KEY: MOVIE_API_KEY, PAGE: page.toString()});
 

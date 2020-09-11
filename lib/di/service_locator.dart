@@ -1,5 +1,5 @@
 import 'package:get_it/get_it.dart';
-import 'package:moviedb_flutter/data/repositories/movie_repository.dart';
+import 'package:moviedb_flutter/data/repository/MovieRepository.dart';
 
 final getIt = GetIt.instance;
 

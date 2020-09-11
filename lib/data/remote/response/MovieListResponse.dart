@@ -1,16 +1,24 @@
-import 'package:moviedb_flutter/data/models/movie.dart';
+import 'package:json_annotation/json_annotation.dart';
+import 'package:moviedb_flutter/data/model/Movie.dart';
 
+part 'MovieListResponse.g.dart';
+
+@JsonSerializable(explicitToJson: true)
 class MovieListResponse {
+  MovieListResponse({
+    this.page,
+    this.totalResults,
+    this.totalPages,
+    this.results,
+  });
+
   final int page;
   final int totalResults;
   final int totalPages;
   final List<Movie> results;
 
-  MovieListResponse.fromJson(Map<String, dynamic> map)
-      : page = map['page'],
-        totalResults = map['total_results'],
-        totalPages = map['total_pages'],
-        results = (map['results'] as List)
-            .map((json) => Movie.fromJson(json))
-            .toList();
+  factory MovieListResponse.fromJson(Map<String, dynamic> json) =>
+      _$MovieListResponseFromJson(json);
+
+  Map<String, dynamic> toJson() => _$MovieListResponseToJson(this);
 }

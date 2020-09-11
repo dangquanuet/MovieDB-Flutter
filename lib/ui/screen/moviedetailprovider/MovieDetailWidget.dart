@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:moviedb_flutter/data/models/movie.dart';
-import 'package:moviedb_flutter/utils/utils.dart';
+import 'package:moviedb_flutter/data/model/Movie.dart';
+import 'package:moviedb_flutter/util/utils.dart';
 import 'package:provider/provider.dart';
 
-import 'movie_detail_model.dart';
+import 'MovieDetailModel.dart';
 
 /// build MovieListWidget with ChangeNotifierProvider
 Widget buildMovieDetailWidget(Movie movie) {

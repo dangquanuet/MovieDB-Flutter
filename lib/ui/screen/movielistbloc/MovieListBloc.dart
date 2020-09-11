@@ -2,13 +2,13 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:bloc/bloc.dart';
-import 'package:moviedb_flutter/data/models/movie.dart';
-import 'package:moviedb_flutter/data/repositories/movie_repository.dart';
+import 'package:moviedb_flutter/data/model/Movie.dart';
+import 'package:moviedb_flutter/data/repository/MovieRepository.dart';
 import 'package:moviedb_flutter/di/service_locator.dart';
-import 'package:moviedb_flutter/ui/screens/movielistbloc/movie_list_state.dart';
+import 'package:moviedb_flutter/ui/screen/movielistbloc/MovieListState.dart';
 import 'package:rxdart/rxdart.dart';
 
-import 'movie_list_event.dart';
+import 'MovieListEvent.dart';
 
 class MovieListBloc extends Bloc<MovieListEvent, MovieListState> {
   final MovieRepository _movieRepository = getIt.get<MovieRepository>();
@@ -59,7 +59,7 @@ class MovieListBloc extends Bloc<MovieListEvent, MovieListState> {
   }
 
   Future<List<Movie>> _fetchMovies(int page) async {
-    final response = await _movieRepository.discoverMovies(page);
-    return response.results;
+    final response = await _movieRepository.discoverMovies(page: page);
+    return response.data.results;
   }
 }
