@@ -1,7 +1,8 @@
 import 'package:dio/dio.dart';
 import 'package:moviedb_flutter/data/models/movie.dart';
 import 'package:retrofit/retrofit.dart';
-part 'package:api_client.g.dart';
+
+part 'api_client.g.dart';
 
 @RestApi(baseUrl: "https://api.themoviedb.org")
 abstract class ApiClient {
@@ -9,7 +10,7 @@ abstract class ApiClient {
     dio.options = BaseOptions(
         receiveTimeout: 10000,
         connectTimeout: 10000
-    )
+    );
     return _ApiClient(dio, baseUrl: baseUrl);
   }
 

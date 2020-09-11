@@ -8,7 +8,7 @@ import 'package:http/http.dart' as http;
 import 'package:logger/logger.dart';
 import 'package:moviedb_flutter/data/models/movie.dart';
 import 'package:moviedb_flutter/data/models/trailer_model.dart';
-import 'package:moviedb_flutter/data/remote/api_service.dart';
+import 'package:moviedb_flutter/data/remote/api_client.dart';
 import 'package:moviedb_flutter/data/remote/response/MovieListResponse.dart';
 
 abstract class MovieRepository {
