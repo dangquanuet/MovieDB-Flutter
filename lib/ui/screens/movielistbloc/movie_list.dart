@@ -44,8 +44,6 @@ class MovieList extends StatefulWidget {
 
 class _MovieListState extends State<MovieList> {
   MovieListBloc _movieListBloc;
-  final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
-      GlobalKey<RefreshIndicatorState>();
   Completer<void> _refreshCompleter = Completer<void>();
 
   @override
@@ -88,7 +86,6 @@ class _MovieListState extends State<MovieList> {
 
   Widget buildList(List<Movie> movieList) {
     return RefreshIndicator(
-      key: _refreshIndicatorKey,
       onRefresh: _refresh,
       child: GridView.builder(
         physics: Platform.isAndroid
@@ -100,9 +97,7 @@ class _MovieListState extends State<MovieList> {
           childAspectRatio: 0.6,
         ),
         itemBuilder: (BuildContext context, int index) {
-          print(index);
           if (index + 5 >= movieList.length) {
-            print('loadmore');
             _movieListBloc.add(LoadMore());
           }
           return buildMovieItem(context, movieList[index]);

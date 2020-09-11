@@ -2,27 +2,21 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:moviedb_flutter/data/local/favorite_movie_db.dart';
+import 'package:logger/logger.dart';
 import 'package:moviedb_flutter/data/models/movie.dart';
 import 'package:moviedb_flutter/data/models/trailer_model.dart';
+import 'package:moviedb_flutter/data/remote/api_service.dart';
 import 'package:moviedb_flutter/data/remote/response/MovieListResponse.dart';
 
 abstract class MovieRepository {
   Future<MovieListResponse> discoverMovies(int page);
 
-  Future<List<Movie>> getMovies(String query);
+  Future<List<Movie>> searchMovies(String query);
 
   Future<Trailer> getTrailer({@required String movieId});
-
-  Future<List<Movie>> getFavoriteMovies();
-
-  Future<bool> isFavorite(String id);
-
-  Future<int> removeFavorite(String id);
-
-  Future<int> insertFavorite(Movie movie);
 
   Future<Movie> getMovieById(String id);
 
@@ -42,21 +36,22 @@ class _MovieRepository implements MovieRepository {
   static const RESULTS = 'results';
   static const STATUS_MESSAGE = 'status_message';
 
-  static _MovieRepository _instance;
-  final FavoriteMovieDb _db;
+  final Dio dio = Dio();
+  final Logger logger = Logger();
+  var apiClient;
 
-  factory _MovieRepository() =>
-      _instance ??= _MovieRepository._internal(FavoriteMovieDb.getInstance());
-
-  _MovieRepository._internal(this._db);
+  _MovieRepository() {
+    apiClient = ApiClient(dio);
+  }
 
   @override
   Future<MovieListResponse> discoverMovies(int page) async {
+
     final url = Uri.https(BASE_URL, DISCOVER_MOVIE,
         {API_KEY: MOVIE_API_KEY, PAGE: page.toString()});
 
     print(url);
-    final response = await http.get(url);
+    final response = await http.get(url).timeout(Duration(seconds: 10));
     final decoded = json.decode(response.body);
     print(response.statusCode);
     print(response.body);
@@ -72,7 +67,7 @@ class _MovieRepository implements MovieRepository {
   }
 
   @override
-  Future<List<Movie>> getMovies(String query) async {
+  Future<List<Movie>> searchMovies(String query) async {
     final url = Uri.https(
       BASE_URL,
       SEARCH_MOVIE,
@@ -98,21 +93,6 @@ class _MovieRepository implements MovieRepository {
       throw Exception('Failed to load trailers');
     }
   }
-
-  @override
-  Future<List<Movie>> getFavoriteMovies() => _db.getMovies();
-
-  @override
-  Future<bool> isFavorite(String id) async {
-    final movie = await _db.getMovie(id);
-    return movie != null;
-  }
-
-  @override
-  Future<int> removeFavorite(String id) => _db.delete(id);
-
-  @override
-  Future<int> insertFavorite(Movie movie) => _db.insert(movie);
 
   @override
   Future<Movie> getMovieById(String id) async {

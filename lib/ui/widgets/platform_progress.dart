@@ -5,17 +5,17 @@ import 'package:moviedb_flutter/ui/widgets/platform_widget.dart';
 class PlatformProgress extends PlatformWidget<CupertinoActivityIndicator,
     CircularProgressIndicator> {
   @override
-  CircularProgressIndicator createAndroidWidget(BuildContext context) {
+  CircularProgressIndicator buildAndroidWidget(BuildContext context) {
     return CircularProgressIndicator();
   }
 
   @override
-  CupertinoActivityIndicator createIosWidget(BuildContext context) {
+  CupertinoActivityIndicator buildIosWidget(BuildContext context) {
     return CupertinoActivityIndicator();
   }
 
   @override
-  Widget createDefaultWidget(BuildContext context) {
+  Widget buildDefaultWidget(BuildContext context) {
     return CircularProgressIndicator();
   }
 }
