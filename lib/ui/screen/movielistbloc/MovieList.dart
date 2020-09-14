@@ -6,12 +6,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:moviedb_flutter/data/model/Movie.dart';
-import 'package:moviedb_flutter/di/service_locator.dart';
+import 'package:moviedb_flutter/di/ServiceLocator.dart';
 import 'package:moviedb_flutter/ui/screen/moviedetailprovider/MovieDetailWidget.dart';
 import 'package:moviedb_flutter/ui/screen/movielistbloc/MovieListBloc.dart';
 import 'package:moviedb_flutter/ui/screen/movielistbloc/MovieListState.dart';
-import 'package:moviedb_flutter/ui/widget/platform_progress.dart';
-import 'package:moviedb_flutter/util/utils.dart';
+import 'package:moviedb_flutter/ui/widget/PlatformProgress.dart';
+import 'package:moviedb_flutter/util/Utils.dart';
 
 import 'MovieListEvent.dart';
 

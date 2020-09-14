@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:moviedb_flutter/ui/widget/platform_widget.dart';
+import 'package:moviedb_flutter/ui/widget/PlatformWidget.dart';
 
 class PlatformProgress extends PlatformWidget<CupertinoActivityIndicator,
     CircularProgressIndicator> {

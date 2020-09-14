@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:meta/meta.dart';
 import 'package:moviedb_flutter/data/model/Movie.dart';
 import 'package:moviedb_flutter/data/repository/MovieRepository.dart';
-import 'package:moviedb_flutter/di/service_locator.dart';
+import 'package:moviedb_flutter/di/ServiceLocator.dart';
 
 const ITEM_PER_PAGE = 20;
 

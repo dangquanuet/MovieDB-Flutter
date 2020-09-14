@@ -3,11 +3,11 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:moviedb_flutter/data/model/Movie.dart';
 import 'package:moviedb_flutter/ui/screen/moviedetailprovider/MovieDetailWidget.dart';
-import 'package:moviedb_flutter/ui/widget/platform_progress.dart';
-import 'package:moviedb_flutter/util/utils.dart';
+import 'package:moviedb_flutter/ui/widget/PlatformProgress.dart';
+import 'package:moviedb_flutter/util/Utils.dart';
 import 'package:provider/provider.dart';
 
-import 'movie_list_model.dart';
+import 'MovieListModel.dart';
 
 /// build MovieListWidget with ChangeNotifierProvider
 Widget buildMovieListProvider() {

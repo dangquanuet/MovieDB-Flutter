@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:moviedb_flutter/data/model/Movie.dart';
-import 'package:moviedb_flutter/util/utils.dart';
+import 'package:moviedb_flutter/util/Utils.dart';
 import 'package:provider/provider.dart';
 
 import 'MovieDetailModel.dart';

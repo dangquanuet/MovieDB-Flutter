@@ -1,5 +1,5 @@
 import 'package:flutter/scheduler.dart';
-import 'package:moviedb_flutter/ui/base/base_model.dart';
+import 'package:moviedb_flutter/ui/base/BaseModel.dart';
 
 abstract class BaseLoadMoreRefreshModel<Item> extends BaseModel {
   BaseLoadMoreRefreshModel() {

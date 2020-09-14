@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:logger/logger.dart';
 import 'package:moviedb_flutter/data/model/Movie.dart';
-import 'package:moviedb_flutter/data/model/trailer_model.dart';
+import 'package:moviedb_flutter/data/model/Trailer.dart';
 import 'package:moviedb_flutter/data/remote/ApiClient.dart';
 import 'package:moviedb_flutter/data/remote/ServerError.dart';
 import 'package:moviedb_flutter/data/remote/response/BaseModel.dart';

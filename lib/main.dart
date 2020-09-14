@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:moviedb_flutter/di/service_locator.dart';
-import 'package:moviedb_flutter/ui/screen/movielistprovider/movie_llist_widget.dart';
+import 'package:moviedb_flutter/di/ServiceLocator.dart';
+import 'package:moviedb_flutter/ui/screen/movielistprovider/MovieLlistWidget.dart';
 
 void main() {
   // setup dependency injection

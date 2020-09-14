@@ -2,8 +2,8 @@ import 'package:moviedb_flutter/data/model/Movie.dart';
 import 'package:moviedb_flutter/data/remote/response/BaseModel.dart';
 import 'package:moviedb_flutter/data/remote/response/MovieListResponse.dart';
 import 'package:moviedb_flutter/data/repository/MovieRepository.dart';
-import 'package:moviedb_flutter/di/service_locator.dart';
-import 'package:moviedb_flutter/ui/base/base_load_more_refresh_model.dart';
+import 'package:moviedb_flutter/di/ServiceLocator.dart';
+import 'package:moviedb_flutter/ui/base/BaseLoadMoreRefreshModel.dart';
 
 class MovieListModel extends BaseLoadMoreRefreshModel<Movie> {
   final _movieRepository = getIt.get<MovieRepository>();
