@@ -76,7 +76,9 @@ class _MovieListState extends State<MovieList> {
         }
 
         if (state is LoadSuccessState) {
-          return buildList(state.movieList);
+          return buildList(
+            movieList: state.movieList,
+          );
         }
 
         return Container();
@@ -84,7 +86,9 @@ class _MovieListState extends State<MovieList> {
     );
   }
 
-  Widget buildList(List<Movie> movieList) {
+  Widget buildList({
+    @required List<Movie> movieList,
+  }) {
     return RefreshIndicator(
       onRefresh: _refresh,
       child: GridView.builder(
@@ -100,38 +104,53 @@ class _MovieListState extends State<MovieList> {
           if (index + 5 >= movieList.length) {
             _movieListBloc.add(LoadMore());
           }
-          return buildMovieItem(context, movieList[index]);
+          return buildMovieItem(
+            context: context,
+            movie: movieList[index],
+          );
         },
       ),
     );
   }
 
-  Widget buildMovieItem(BuildContext context, Movie movie) {
+  Widget buildMovieItem({
+    @required BuildContext context,
+    @required Movie movie,
+  }) {
     return GestureDetector(
-      onTap: () => openDetailPage(context, movie),
-      child: Stack(
-        children: <Widget>[
-          SizedBox.expand(
+      onTap: () => openDetailPage(
+        context: context,
+        movie: movie,
+      ),
+      child: Hero(
+        tag: movie.title,
+        child: Stack(
+          children: <Widget>[
+            SizedBox.expand(
               child: CachedNetworkImage(
-            imageUrl: getSmallImageUrl(movie.posterPath),
-            alignment: Alignment.center,
-            fit: BoxFit.cover,
-          )),
-          Align(
-            alignment: Alignment.bottomCenter,
-            child: Container(
-              width: double.infinity,
-              padding: EdgeInsets.all(6),
-              decoration:
-                  BoxDecoration(color: Colors.grey[900].withOpacity(0.5)),
-              child: Text(
-                movie.title,
-                style: TextStyle(color: Colors.white, fontSize: 16),
-                textAlign: TextAlign.center,
+                imageUrl: getSmallImageUrl(
+                  imagePath: movie.posterPath,
+                ),
+                alignment: Alignment.center,
+                fit: BoxFit.cover,
               ),
             ),
-          )
-        ],
+            Align(
+              alignment: Alignment.bottomCenter,
+              child: Container(
+                width: double.infinity,
+                padding: EdgeInsets.all(6),
+                decoration:
+                    BoxDecoration(color: Colors.grey[900].withOpacity(0.5)),
+                child: Text(
+                  movie.title,
+                  style: TextStyle(color: Colors.white, fontSize: 16),
+                  textAlign: TextAlign.center,
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -142,7 +161,10 @@ class _MovieListState extends State<MovieList> {
   }
 
   /// open detail page
-  void openDetailPage(BuildContext context, Movie movie) {
+  void openDetailPage({
+    @required BuildContext context,
+    @required Movie movie,
+  }) {
     Navigator.push(
       context,
       MaterialPageRoute(builder: (context) {

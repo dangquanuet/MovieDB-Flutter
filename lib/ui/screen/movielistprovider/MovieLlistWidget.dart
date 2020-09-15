@@ -43,7 +43,10 @@ class MovieListWidget extends StatelessWidget {
                       crossAxisCount: 2),
                   itemBuilder: (BuildContext context, int index) {
                     movieListModel.onScrollListener(index);
-                    return buildMovieItem(context, movieList[index]);
+                    return buildMovieItem(
+                      context: context,
+                      movie: movieList[index],
+                    );
                   }),
             ),
           ),
@@ -53,14 +56,19 @@ class MovieListWidget extends StatelessWidget {
     }
   }
 
-  Widget buildMovieItem(BuildContext context, Movie movie) {
+  Widget buildMovieItem({
+    @required BuildContext context,
+    @required Movie movie,
+  }) {
     return GestureDetector(
       onTap: () => openDetailPage(context, movie),
       child: Stack(
         children: <Widget>[
           SizedBox.expand(
               child: Image.network(
-            getSmallImageUrl(movie.posterPath),
+            getSmallImageUrl(
+              imagePath: movie.posterPath,
+            ),
             alignment: Alignment.center,
           )),
           Align(

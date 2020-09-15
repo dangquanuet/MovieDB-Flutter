@@ -12,7 +12,10 @@ class LoadSuccessState extends MovieListState {
   final List<Movie> movieList;
   final int page;
 
-  LoadSuccessState({this.movieList, this.page});
+  LoadSuccessState({
+    @required this.movieList,
+    @required this.page,
+  });
 }
 
 class LoadErrorState extends MovieListState {
