@@ -1,3 +1,4 @@
+/*
 import 'package:flutter/scheduler.dart';
 import 'package:moviedb_flutter/ui/base/BaseModel.dart';
 
@@ -116,3 +117,4 @@ abstract class BaseLoadMoreRefreshModel<Item> extends BaseModel {
     isEmptyList = itemList.isEmpty;
   }
 }
+*/

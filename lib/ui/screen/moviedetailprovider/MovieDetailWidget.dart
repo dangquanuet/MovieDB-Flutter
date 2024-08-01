@@ -1,10 +1,11 @@
-import 'package:cached_network_image/cached_network_image.dart';
+/*import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:moviedb_flutter/data/model/Movie.dart';
 import 'package:moviedb_flutter/util/Utils.dart';
 import 'package:provider/provider.dart';
 
 import 'MovieDetailModel.dart';
+
 
 /// build MovieListWidget with ChangeNotifierProvider
 Widget buildMovieDetailWidget(Movie movie) {
@@ -147,3 +148,4 @@ class FullImage extends StatelessWidget {
     );
   }
 }
+*/

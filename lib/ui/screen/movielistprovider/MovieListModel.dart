@@ -1,3 +1,4 @@
+/*
 import 'package:moviedb_flutter/data/model/Movie.dart';
 import 'package:moviedb_flutter/data/remote/response/BaseModel.dart';
 import 'package:moviedb_flutter/data/remote/response/MovieListResponse.dart';
@@ -30,3 +31,4 @@ class MovieListModel extends BaseLoadMoreRefreshModel<Movie> {
         );
   }
 }
+*/

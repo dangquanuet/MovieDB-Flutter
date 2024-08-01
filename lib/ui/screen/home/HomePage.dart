@@ -1,3 +1,4 @@
+/*
 import 'dart:async';
 
 import 'package:flutter/material.dart';
@@ -199,3 +200,4 @@ class MovieWidgetState extends State<MovieWidget> {
     });
   }
 }
+*/
